@@ -13,9 +13,20 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = $request->user()->readings()->with('book'); #user è utente loggato, readings limita la query alle sue letture e with carica le letture con i dati
+        if ($request->query('status')) {
+            $query->where('status', $request->query('status'));
+        }
+
+        if ($request->has('rating')) {
+            $query->where('rating', $request->query('rating'));
+        }
+
+        $readings = $query->get();
+
+        return response()->json($readings);
     }
 
     /**
@@ -87,9 +98,13 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
-        //
+        $reading = $request->user()->readings()->with('book')->find($id);
+        if (!$reading) {
+            return response()->json(['error' => 'Il libro non è presente'], 404);
+        }
+        return response()->json($reading);
     }
 
     /**
@@ -97,20 +112,41 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'review' => 'sometimes|nullable|string',
+            'rating' => 'sometimes|nullable|integer|min:0|max:5',
+            'status' => 'sometimes|in:to_read,reading,read',
+        ]);
+
+        $reading = $request->user()->readings()->with('book')->find($id);
+        if (!$reading) {
+            return response()->json(['error' => 'Il libro non è presente'], 404);
+        }
+
+        $reading->update($validated);
+        return response()->json($reading);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        $reading = $request->user()->readings()->find($id);
+        if (!$reading) {
+            return response()->json(['error' => 'Il libro non è presente'], 404);
+        }
+        $reading->delete();
+        return response()->json(null, 204);
     }
 
     public function lookup(Request $request)
     {
         $isbn = $request->query('isbn');
+
+        if (!$isbn) {
+            return response()->json(['error' => 'ISBN mancante'], 400);
+        }
 
         $response = Http::get('https://openlibrary.org/api/books', [
             'bibkeys' => "ISBN:{$isbn}",
@@ -118,9 +154,8 @@ class BookController extends Controller
             'jscmd' => 'data',
         ]);
 
-
         if ($response->failed() || empty($response->json("ISBN:{$isbn}"))) {
-            return response()->json(['error' => 'Book not found'], 404);
+            return response()->json(['error' => 'Il libro non è presente'], 404);
         }
 
         $data = $response->json("ISBN:{$isbn}");
@@ -137,23 +172,22 @@ class BookController extends Controller
     {
         $book = Book::find($id);
         if (!$book) {
-            return response()->json(['error' => 'Book Not Found'], 404);
+            return response()->json(['error' => 'Il libro non è presente'], 404);
         }
 
-        $isbn = $book->isbn;
+        $olid = basename($book->open_library_key);
 
         $response = Http::get('https://openlibrary.org/api/books', [
-            'bibkeys' => "ISBN:{$isbn}",
+            'bibkeys' => "OLID:{$olid}",
             'format' => 'json',
             'jscmd' => 'data',
         ]);
 
-
-        if ($response->failed() || empty($response->json("ISBN:{$isbn}"))) {
-            return response()->json(['error' => 'Book not found'], 404);
+        if ($response->failed() || empty($response->json("OLID:{$olid}"))) {
+            return response()->json(['error' => 'Il libro non è presente'], 404);
         }
 
-        $data = $response->json("ISBN:{$isbn}");
+        $data = $response->json("OLID:{$olid}");
 
         $book->update([
             'title' => $data['title'],
