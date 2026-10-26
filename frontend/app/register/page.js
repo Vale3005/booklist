@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -64,23 +65,23 @@ export default function Register() {
         <div className="col-md-8">
           <h1 className="mb-4">Registrazione Utente:</h1>
 
-          <div className="mb-3">
-            <label htmlFor="exampleInputName" className="form-label">
-              Nome Utente:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="exampleInputName"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-            />
-            {errori.name && (
-              <div className="text-danger small">{errori.name[0]}</div>
-            )}
-          </div>
-
           <form onSubmit={registrati}>
+            <div className="mb-3">
+              <label htmlFor="exampleInputName" className="form-label">
+                Nome Utente:
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="exampleInputName"
+                autoComplete="name"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
+              {errori.name && (
+                <div className="text-danger small">{errori.name[0]}</div>
+              )}
+            </div>
             <div className="mb-3">
               <label htmlFor="exampleInputEmail1" className="form-label">
                 Indirizzo Email:
@@ -89,6 +90,7 @@ export default function Register() {
                 type="email"
                 className="form-control"
                 id="exampleInputEmail1"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -105,6 +107,7 @@ export default function Register() {
                 type="password"
                 className="form-control"
                 id="exampleInputPassword"
+                autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -121,6 +124,7 @@ export default function Register() {
                 type="password"
                 className="form-control"
                 id="exampleInputPassword1"
+                autoComplete="new-password"
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
               />
@@ -151,6 +155,10 @@ export default function Register() {
               </div>
             )}
           </form>
+
+          <p className="mt-3">
+            Hai già un account? <Link href="/login">Accedi</Link>
+          </p>
         </div>
       </div>
     </div>
