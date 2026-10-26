@@ -7,14 +7,12 @@ import { useRouter } from "next/navigation";
 const endPoint1 = "http://localhost:8000/api/login";
 
 export default function Login() {
-  const router = useRouter(); // reindirizza alla home dopo la registrazione
+  const router = useRouter(); // reindirizza alla home dopo login
   const [loading, setLoading] = useState(false);
   const [errore, setErrore] = useState("");
   const [errori, setErrori] = useState({});
-  const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   async function login(e) {
     e.preventDefault();
@@ -30,10 +28,9 @@ export default function Login() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: nome,
           email: email,
           password: password,
-          password_confirmation: passwordConfirm,
+          
         }),
       });
 
@@ -42,6 +39,12 @@ export default function Login() {
       // Errori di validazione: Laravel manda { message, errors: { campo: [messaggi] } }
       if (res.status === 422) {
         setErrori(data.errors);
+        return;
+      }
+
+      // Credenziali sbagliate: Laravel risponde 401 
+      if (res.status === 401) {
+        setErrore("Email o password non corretti");
         return;
       }
 
@@ -115,7 +118,7 @@ export default function Login() {
                   Invio in corso...
                 </>
               ) : (
-                "Registrati"
+                "Accedi"
               )}
             </button>
 
