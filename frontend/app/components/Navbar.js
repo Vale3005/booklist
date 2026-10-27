@@ -1,27 +1,60 @@
 "use client";
 import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+const endPoint1 = "http://localhost:8000/api/logout";
+
 
 export default function Navbar() {
   const [loggato, setLoggato] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
+  // installo JavaScript di Bootstrap 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
+  // Controlla il token a ogni cambio di pagina
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setLoggato(true);
+    } else {
+      setLoggato(false);
     }
-  }, []);
+  }, [pathname]);
+
+  // Per non far vedere la navbar in caso non si sia loggati
+  if (!loggato) {
+    return null;
+  }
+
+  async function logout() {
+  const token = localStorage.getItem("token");
+
+  try {
+    await fetch(endPoint1, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`, // autorizza il bearer del token 
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  } finally {
+    localStorage.removeItem("token");
+    router.push("/login");
+  }
+}
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-          Navbar
-        </a>
+        <Link className="navbar-brand" href="/">
+          Booklist
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -64,18 +97,9 @@ export default function Navbar() {
           </form>
 
           <div className="d-flex align-items-center">
-            {loggato ? (
-              <button className="btn btn-outline-danger ms-2"><Link className="nav-link" href="/logout">Esci</Link></button>
-            ) : (
-              <>
-                <Link className="nav-link ms-2" href="/login">
-                  Accedi
-                </Link>
-                <Link className="nav-link ms-2" href="/register">
-                  Registrati
-                </Link>
-              </>
-            )}
+            <button className="btn btn-outline-danger ms-2" type="button" onClick={logout}>
+              Esci
+            </button>
           </div>
         </div>
       </div>
