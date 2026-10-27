@@ -2,16 +2,76 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useState } from "react";
 
 const endPoint1 = "http://localhost:8000/api/books/search";
+const endPoint2 = "http://localhost:8000/api/books";
 
 export default function Home() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [errore, setErrore] = useState("");
+  const [messaggio, setMessaggio] = useState("");
   const [ricerca, setRicerca] = useState("");
   const [libri, setLibri] = useState([]);
+
+  async function aggiungi(libro, status) {
+    setLoading(true);
+    setErrore("");
+    setMessaggio("");
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(endPoint2, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          open_library_key: libro.open_library_key,
+          title: libro.title,
+          author: libro.author,
+          cover_url: libro.cover_url,
+          status: status,
+        }),
+      });
+
+      // Token scaduto o non valido torna al login
+      if (res.status === 401) {
+        localStorage.removeItem("token");
+        router.push("/login");
+        return;
+      }
+
+      if (res.status === 404) {
+        setErrore("Libro non trovato su Open Library");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      if (res.status === 409) {
+        setErrore("Libro già presente nella tua lista");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      // Altri errori (server, rete etc)
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+
+      setMessaggio("Libro aggiunto alla tua lista");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      setErrore(err.message);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function cerca(e) {
     e.preventDefault();
@@ -22,6 +82,7 @@ export default function Home() {
     }
     setLoading(true);
     setErrore("");
+    setMessaggio("");
 
     try {
       const token = localStorage.getItem("token");
@@ -100,12 +161,19 @@ export default function Home() {
               value={ricerca}
               onChange={(e) => setRicerca(e.target.value)}
             />
-            <button type="submit" className="btn btn-primary">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
               Cerca Libro
             </button>
           </form>
 
           {errore && <div className="alert alert-danger mt-4">{errore}</div>}
+          {messaggio && (
+            <div className="alert alert-success mt-4">{messaggio}</div>
+          )}
         </div>
       </div>
 
@@ -127,12 +195,22 @@ export default function Home() {
               <div className="card-body">
                 <h5 className="card-title">{libro.title}</h5>
                 <p className="card-text">{libro.author}</p>
-                <a href="#" className="btn btn-primary me-2">
+                <button
+                  type="button"
+                  className="btn btn-primary me-2"
+                  disabled={loading}
+                  onClick={() => aggiungi(libro, "read")}
+                >
                   Letto
-                </a>
-                <a href="#" className="btn btn-primary">
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  disabled={loading}
+                  onClick={() => aggiungi(libro, "to_read")}
+                >
                   Da Leggere
-                </a>
+                </button>
               </div>
             </div>
           </div>

@@ -92,7 +92,7 @@ export default function Navbar() {
               aria-label="Search"
             />
             <button className="btn btn-primary" type="submit">
-              Search
+              Cerca
             </button>
           </form>
 
