@@ -11,8 +11,10 @@ Route::get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/books/lookup', [BookController::class, 'lookup']);
+    Route::get('books/search',[BookController::class, 'search']);
     Route::apiResource('/books', BookController::class);
     Route::post('/books/{book}/refresh', [BookController::class, 'refresh']);
+    
 });
 
 // Registration, login, logout route
