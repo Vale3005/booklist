@@ -1,3 +1,105 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+const endPoint = "http://localhost:8000/api/books";
+
 export default function Profilo() {
-    
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [errore, setErrore] = useState("");
+  const [letture, setLetture] = useState([]);
+  const letti = letture.filter((lettura) => lettura.status === "read");
+  const daLeggere = letture.filter((lettura) => lettura.status === "to_read");
+
+  useEffect(() => {
+    async function carica() {
+      setLoading(true);
+      setErrore("");
+
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch(endPoint, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          router.push("/login");
+          return;
+        }
+
+        // Altri errori (server, rete etc)
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+
+        const data = await res.json();
+        console.log(data);
+        setLetture(data);
+      } catch (err) {
+        setErrore(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    carica();
+  }, [router]);
+
+  return (
+    <main className="container py-5">
+      <h1> Il tuo profilo </h1>
+
+      <h2> Letti: </h2>
+      <div className="row g-4 mt-3">
+        {letti.map((lettura) => (
+          <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div className="card h-100">
+              {lettura.book.cover_url && (
+                <img
+                  src={lettura.book.cover_url}
+                  className="card-img-top"
+                  alt={lettura.book.title}
+                  style={{ height: "300px", objectFit: "cover" }}
+                />
+              )}
+              <div className="card-body">
+                <h5 className="card-title">{lettura.book.title}</h5>
+                <p className="card-text">{lettura.book.author}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <h2> Da Leggere: </h2>
+      <div className="row g-4 mt-3">
+        {daLeggere.map((lettura) => (
+          <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div className="card h-100">
+              {lettura.book.cover_url && (
+                <img
+                  src={lettura.book.cover_url}
+                  className="card-img-top"
+                  alt={lettura.book.title}
+                  style={{ height: "300px", objectFit: "cover" }}
+                />
+              )}
+              <div className="card-body">
+                <h5 className="card-title">{lettura.book.title}</h5>
+                <p className="card-text">{lettura.book.author}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </main>
+  );
 }
