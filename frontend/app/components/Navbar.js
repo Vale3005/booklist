@@ -2,97 +2,83 @@
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-const endPoint1 = "http://localhost:8000/api/logout";
+import { Button } from "@/components/ui/button";
 
+const endPoint1 = "http://localhost:8000/api/logout";
 
 export default function Navbar() {
   const [loggato, setLoggato] = useState(false);
+  const [aperto, setAperto] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-
-  // installo JavaScript di Bootstrap 
-  useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js");
-  }, []);
 
   // Controlla il token a ogni cambio di pagina
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      setLoggato(true);
-    } else {
-      setLoggato(false);
-    }
+    setLoggato(!!token);
+    setAperto(false); // chiude il menu mobile quando cambi pagina
   }, [pathname]);
 
-  // Per non far vedere la navbar in caso non si sia loggati
   if (!loggato) {
     return null;
   }
 
   async function logout() {
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-  try {
-    await fetch(endPoint1, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`, // autorizza il bearer del token 
-      },
-    });
-  } catch (err) {
-    console.error(err);
-  } finally {
-    localStorage.removeItem("token");
-    router.push("/login");
+    try {
+      await fetch(endPoint1, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      localStorage.removeItem("token");
+      router.push("/login");
+    }
   }
-}
+
+  const linkClass =
+  "text-sm font-medium text-muted-foreground hover:text-primary transition-colors";
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container-fluid">
-        <Link className="navbar-brand" href="/">
+    <nav className="border-b bg-background">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <Link href="/" className="text-lg font-bold text-primary">
           Booklist
         </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <Link className="nav-link" aria-current="page" href="/">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/profilo">
-                Profilo
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Impostazioni
-              </a>
-            </li>
-          </ul>
-          
 
-          <div className="d-flex align-items-center">
-            <button className="btn btn-outline-danger ms-2" type="button" onClick={logout}>
-              Esci
-            </button>
-          </div>
+        {/* Menu desktop */}
+        <div className="hidden items-center gap-6 md:flex">
+          <Link href="/" className={linkClass}>Home</Link>
+          <Link href="/profilo" className={linkClass}>Profilo</Link>
+          <Link href="#" className={linkClass}>Impostazioni</Link>
+          <Button variant="outline" onClick={logout}>Esci</Button>
         </div>
+
+        {/* Bottone hamburger (solo telefono) */}
+        <button
+          className="md:hidden"
+          onClick={() => setAperto(!aperto)}
+          aria-label="Apri menu"
+        >
+          ☰
+        </button>
       </div>
+
+      {/* Menu telefono */}
+      {aperto && (
+        <div className="flex flex-col gap-3 border-t px-4 py-3 md:hidden">
+          <Link href="/" className={linkClass}>Home</Link>
+          <Link href="/profilo" className={linkClass}>Profilo</Link>
+          <Link href="#" className={linkClass}>Impostazioni</Link>
+          <Button variant="outline" onClick={logout}>Esci</Button>
+        </div>
+      )}
     </nav>
   );
 }
