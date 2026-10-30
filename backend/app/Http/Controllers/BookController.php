@@ -106,7 +106,7 @@ public function store(Request $request)
     {
         $validated = $request->validate([
             'review' => 'sometimes|nullable|string',
-            'rating' => 'sometimes|nullable|integer|min:0|max:5',
+            'rating' => 'sometimes|nullable|integer|min:1|max:5',
             'status' => 'sometimes|in:to_read,reading,read',
         ]);
 
