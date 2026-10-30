@@ -55,6 +55,21 @@ export default function Profilo() {
     carica();
   }, [router]);
 
+  function rimuoviLettura(id) {
+    setLetture((prima) =>
+      prima.filter(
+        /*scarta elemento che ha un id diverso*/
+        (lettura) => lettura.id !== id,
+      ),
+    );
+  }
+
+  function aggiornaLettura(nuova) {
+    setLetture((prima) =>
+      prima.map((lettura) => (lettura.id === nuova.id ? nuova : lettura)),
+    );
+  }
+
   return (
     <main className="container py-5">
       <h1> Il tuo profilo </h1>
@@ -80,8 +95,12 @@ export default function Profilo() {
         {letti.map((lettura) => (
           <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
             <BookCard libro={lettura.book}>
-  <ReadingForm lettura={lettura} />
-</BookCard> 
+              <ReadingForm
+                lettura={lettura}
+                onRimuovi={rimuoviLettura}
+                onAggiorna={aggiornaLettura}
+              />
+            </BookCard>
           </div>
         ))}
       </div>
@@ -93,8 +112,13 @@ export default function Profilo() {
       <div className="row g-4 mt-3">
         {daLeggere.map((lettura) => (
           <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <BookCard libro={lettura.book}/> 
-            
+            <BookCard libro={lettura.book}>
+              <ReadingForm
+                lettura={lettura}
+                onRimuovi={rimuoviLettura}
+                onAggiorna={aggiornaLettura}
+              />
+            </BookCard>
           </div>
         ))}
       </div>
