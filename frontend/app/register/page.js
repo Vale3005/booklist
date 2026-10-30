@@ -3,6 +3,16 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const endPoint1 = "http://localhost:8000/api/register";
 
@@ -60,69 +70,60 @@ export default function Register() {
     }
   }
   return (
-    <div className="container py-5">
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <h1 className="mb-4">Registrazione Utente:</h1>
+    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl">Registrazione Utente</CardTitle>
+        </CardHeader>
 
-          <form onSubmit={registrati}>
-            <div className="mb-3">
-              <label htmlFor="exampleInputName" className="form-label">
-                Nome Utente:
-              </label>
-              <input
+        <CardContent>
+          <form onSubmit={registrati} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="exampleInputName">Nome Utente:</Label>
+              <Input
                 type="text"
-                className="form-control"
                 id="exampleInputName"
                 autoComplete="name"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
               />
               {errori.name && (
-                <div className="text-danger small">{errori.name[0]}</div>
+                <p className="text-sm text-destructive">{errori.name[0]}</p>
               )}
             </div>
-            <div className="mb-3">
-              <label htmlFor="exampleInputEmail1" className="form-label">
-                Indirizzo Email:
-              </label>
-              <input
+
+            <div className="space-y-2">
+              <Label htmlFor="exampleInputEmail1">Indirizzo Email:</Label>
+              <Input
                 type="email"
-                className="form-control"
                 id="exampleInputEmail1"
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               {errori.email && (
-                <div className="text-danger small">{errori.email[0]}</div>
+                <p className="text-sm text-destructive">{errori.email[0]}</p>
               )}
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="exampleInputPassword" className="form-label">
-                Inserisci Password:
-              </label>
-              <input
+            <div className="space-y-2">
+              <Label htmlFor="exampleInputPassword">Inserisci Password:</Label>
+              <Input
                 type="password"
-                className="form-control"
                 id="exampleInputPassword"
                 autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               {errori.password && (
-                <div className="text-danger small">{errori.password[0]}</div>
+                <p className="text-sm text-destructive">{errori.password[0]}</p>
               )}
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="exampleInputPassword1" className="form-label">
-                Conferma Password:
-              </label>
-              <input
+            <div className="space-y-2">
+              <Label htmlFor="exampleInputPassword1">Conferma Password:</Label>
+              <Input
                 type="password"
-                className="form-control"
                 id="exampleInputPassword1"
                 autoComplete="new-password"
                 value={passwordConfirm}
@@ -130,15 +131,11 @@ export default function Register() {
               />
             </div>
 
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={loading}
-            >
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? (
                 <>
                   <span
-                    className="spinner-border spinner-border-sm me-2"
+                    className="mr-2 inline-block size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
                     role="status"
                     aria-hidden="true"
                   ></span>
@@ -147,20 +144,25 @@ export default function Register() {
               ) : (
                 "Registrati"
               )}
-            </button>
+            </Button>
 
             {errore && (
-              <div className="alert alert-danger mt-4">
+              <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
                 <strong>Errore:</strong> {errore}
               </div>
             )}
           </form>
+        </CardContent>
 
-          <p className="mt-3">
-            Hai già un account? <Link href="/login">Accedi</Link>
+        <CardFooter>
+          <p className="text-sm text-muted-foreground">
+            Hai già un account?{" "}
+            <Link href="/login" className="font-medium text-primary hover:underline">
+              Accedi
+            </Link>
           </p>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 }

@@ -3,6 +3,16 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const endPoint1 = "http://localhost:8000/api/login";
 
@@ -63,55 +73,45 @@ export default function Login() {
     }
   }
   return (
-    <div className="container py-5">
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <h1 className="mb-4">Login Utente:</h1>
+    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl">Login Utente</CardTitle>
+        </CardHeader>
 
-
-          <form onSubmit={login}>
-            <div className="mb-3">
-              <label htmlFor="exampleInputEmail1" className="form-label">
-                Indirizzo Email:
-              </label>
-              <input
+        <CardContent>
+          <form onSubmit={login} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="exampleInputEmail1">Indirizzo Email:</Label>
+              <Input
                 type="email"
-                className="form-control"
                 id="exampleInputEmail1"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               {errori.email && (
-                <div className="text-danger small">{errori.email[0]}</div>
+                <p className="text-sm text-destructive">{errori.email[0]}</p>
               )}
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="exampleInputPassword" className="form-label">
-                Inserisci Password:
-              </label>
-              <input
+            <div className="space-y-2">
+              <Label htmlFor="exampleInputPassword">Inserisci Password:</Label>
+              <Input
                 type="password"
-                className="form-control"
                 id="exampleInputPassword"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               {errori.password && (
-                <div className="text-danger small">{errori.password[0]}</div>
+                <p className="text-sm text-destructive">{errori.password[0]}</p>
               )}
             </div>
 
-
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={loading}
-            >
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? (
                 <>
                   <span
-                    className="spinner-border spinner-border-sm me-2"
+                    className="mr-2 inline-block size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
                     role="status"
                     aria-hidden="true"
                   ></span>
@@ -120,20 +120,25 @@ export default function Login() {
               ) : (
                 "Accedi"
               )}
-            </button>
+            </Button>
 
             {errore && (
-              <div className="alert alert-danger mt-4">
+              <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
                 <strong>Errore:</strong> {errore}
               </div>
             )}
           </form>
+        </CardContent>
 
-          <p className="mt-3">
-           Non hai ancora un account? <Link href="/register">Registrati</Link>
+        <CardFooter>
+          <p className="text-sm text-muted-foreground">
+            Non hai ancora un account?{" "}
+            <Link href="/register" className="font-medium text-primary hover:underline">
+              Registrati
+            </Link>
           </p>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
