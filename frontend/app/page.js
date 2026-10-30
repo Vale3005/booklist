@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import BookCard from "./components/BookCard";
 
 const endPoint1 = "http://localhost:8000/api/books/search";
 const endPoint2 = "http://localhost:8000/api/books";
@@ -183,35 +184,24 @@ export default function Home() {
             key={libro.open_library_key}
             className="col-12 col-sm-6 col-md-4 col-lg-3"
           >
-            <div className="card h-100">
-              {libro.cover_url && (
-                <img
-                  src={libro.cover_url}
-                  className="card-img-top"
-                  alt={libro.title}
-                  style={{ height: "300px", objectFit: "cover" }}
-                />
-              )}
-              <div className="card-body">
-                <h5 className="card-title">{libro.title}</h5>
-                <p className="card-text">{libro.author}</p>
-                <button
-                  type="button"
-                  className="btn btn-primary me-2"
-                  disabled={loading}
-                  onClick={() => aggiungi(libro, "read")}
-                >
-                  Letto
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  disabled={loading}
-                  onClick={() => aggiungi(libro, "to_read")}
-                >
-                  Da Leggere
-                </button>
-              </div>
+            <BookCard libro={libro} />
+            <div className="mt-2">
+              <button
+                type="button"
+                className="btn btn-primary me-2"
+                disabled={loading}
+                onClick={() => aggiungi(libro, "read")}
+              >
+                Letto
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                disabled={loading}
+                onClick={() => aggiungi(libro, "to_read")}
+              >
+                Da Leggere
+              </button>
             </div>
           </div>
         ))}
