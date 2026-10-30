@@ -80,8 +80,8 @@ export default function Profilo() {
         {letti.map((lettura) => (
           <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
             <BookCard libro={lettura.book}>
-              <ReadingForm lettura={lettura} />
-            </BookCard>
+  <ReadingForm lettura={lettura} />
+</BookCard> 
           </div>
         ))}
       </div>
@@ -92,10 +92,9 @@ export default function Profilo() {
       )}
       <div className="row g-4 mt-3">
         {daLeggere.map((lettura) => (
-          <div key={lettura.id} className="coal-12 col-sm-6 col-md-4 col-lg-3">
-            <BookCard libro={lettura.book}>
-              <ReadingForm lettura={lettura} />
-            </BookCard>
+          <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+            <BookCard libro={lettura.book}/> 
+            
           </div>
         ))}
       </div>
