@@ -32,60 +32,60 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'open_library_key' => ['required', 'string', 'regex:/^\/works\/OL\d+W$/'],
-        'title' => 'required|string|max:255',
-        'author' => 'nullable|string|max:255',
-        'cover_url' => 'nullable|url',
-        'review' => 'nullable|string',
-        'rating' => 'nullable|integer|min:0|max:5',
-        'status' => 'nullable|in:to_read,reading,read',
-    ]);
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'open_library_key' => ['required', 'string', 'regex:/^\/works\/OL\d+W$/'],
+            'title' => 'required|string|max:255',
+            'author' => 'nullable|string|max:255',
+            'cover_url' => 'nullable|url',
+            'review' => 'nullable|string',
+            'rating' => 'nullable|integer|min:0|max:5',
+            'status' => 'nullable|in:to_read,reading,read',
+        ]);
 
-    $key = $validated['open_library_key'];
+        $key = $validated['open_library_key'];
 
-    // Controllo che il libro esista davvero su Open Library
-    $response = Http::get("https://openlibrary.org{$key}.json");
+        // Controllo che il libro esista davvero su Open Library
+        $response = Http::get("https://openlibrary.org{$key}.json");
 
-    if ($response->failed()) {
-        return response()->json(['error' => 'Book not found'], 404);
+        if ($response->failed()) {
+            return response()->json(['error' => 'Book not found'], 404);
+        }
+
+        // Cerco se il libro è già nel db
+        $book = Book::where('open_library_key', $key)->first();
+
+        // Se non c'è lo creo
+        if (!$book) {
+            $book = new Book();
+            $book->open_library_key = $key;
+            $book->title = $validated['title'];
+            $book->author = $validated['author'] ?? 'Autore sconosciuto';
+            $book->cover_url = $validated['cover_url'] ?? null;
+            $book->save();
+        }
+
+        // Controllo che l'utente non lo abbia già nella lista
+        $exists = Reading::where('user_id', $request->user()->id)
+            ->where('book_id', $book->id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json(['error' => 'Il libro esiste già nella lista'], 409);
+        }
+
+        // Creo la lettura che collega utente e libro
+        $reading = new Reading();
+        $reading->user_id = $request->user()->id;
+        $reading->book_id = $book->id;
+        $reading->status = $validated['status'] ?? 'to_read';
+        $reading->rating = $validated['rating'] ?? null;
+        $reading->review = $validated['review'] ?? null;
+        $reading->save();
+
+        return response()->json($reading, 201);
     }
-
-    // Cerco se il libro è già nel db
-    $book = Book::where('open_library_key', $key)->first();
-
-    // Se non c'è lo creo
-    if (!$book) {
-        $book = new Book();
-        $book->open_library_key = $key;
-        $book->title = $validated['title'];
-        $book->author = $validated['author'] ?? 'Autore sconosciuto';
-        $book->cover_url = $validated['cover_url'] ?? null;
-        $book->save();
-    }
-
-    // Controllo che l'utente non lo abbia già nella lista
-    $exists = Reading::where('user_id', $request->user()->id)
-        ->where('book_id', $book->id)
-        ->exists();
-
-    if ($exists) {
-        return response()->json(['error' => 'Il libro esiste già nella lista'], 409);
-    }
-
-    // Creo la lettura che collega utente e libro
-    $reading = new Reading();
-    $reading->user_id = $request->user()->id;
-    $reading->book_id = $book->id;
-    $reading->status = $validated['status'] ?? 'to_read';
-    $reading->rating = $validated['rating'] ?? null;
-    $reading->review = $validated['review'] ?? null;
-    $reading->save();
-
-    return response()->json($reading, 201);
-}
 
     /**
      * Display the specified resource.
@@ -235,5 +235,35 @@ public function store(Request $request)
         }
 
         return response()->json($books);
+    }
+
+    public function details(string $olid)
+    {
+        $response = Http::get("https://openlibrary.org/works/{$olid}.json");
+
+        if ($response->failed()) {
+            return response()->json(['error' => 'Il libro non è presente'], 404);
+        }
+
+        $data = $response->json();
+
+        // La trama può essere una stringa oppure un array con 'value'
+        $description = $data['description'] ?? null;
+        if (is_array($description)) {
+            $description = $description['value'] ?? null;
+        }
+
+        // La copertina è un numero, l'URL si costruisce come in search
+        $cover = null;
+        if (isset($data['covers'][0]) && $data['covers'][0] > 0) {
+            $cover = "https://covers.openlibrary.org/b/id/{$data['covers'][0]}-L.jpg";
+        }
+
+        return response()->json([
+            'title' => $data['title'] ?? null,
+            'description' => $description,
+            'year' => $data['first_publish_date'] ?? null,
+            'cover_url' => $cover,
+        ]);
     }
 }
