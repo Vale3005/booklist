@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import BookCard from "../components/BookCard";
 
 const endPoint = "http://localhost:8000/api/books";
 
@@ -77,20 +78,7 @@ export default function Profilo() {
       <div className="row g-4 mt-3">
         {letti.map((lettura) => (
           <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card h-100">
-              {lettura.book.cover_url && (
-                <img
-                  src={lettura.book.cover_url}
-                  className="card-img-top"
-                  alt={lettura.book.title}
-                  style={{ height: "300px", objectFit: "cover" }}
-                />
-              )}
-              <div className="card-body">
-                <h5 className="card-title">{lettura.book.title}</h5>
-                <p className="card-text">{lettura.book.author}</p>
-              </div>
-            </div>
+            <BookCard libro={lettura.book}/> 
           </div>
         ))}
       </div>
@@ -102,20 +90,8 @@ export default function Profilo() {
       <div className="row g-4 mt-3">
         {daLeggere.map((lettura) => (
           <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card h-100">
-              {lettura.book.cover_url && (
-                <img
-                  src={lettura.book.cover_url}
-                  className="card-img-top"
-                  alt={lettura.book.title}
-                  style={{ height: "300px", objectFit: "cover" }}
-                />
-              )}
-              <div className="card-body">
-                <h5 className="card-title">{lettura.book.title}</h5>
-                <p className="card-text">{lettura.book.author}</p>
-              </div>
-            </div>
+            <BookCard libro={lettura.book}/> 
+            
           </div>
         ))}
       </div>

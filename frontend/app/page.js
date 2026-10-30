@@ -184,8 +184,7 @@ export default function Home() {
             key={libro.open_library_key}
             className="col-12 col-sm-6 col-md-4 col-lg-3"
           >
-            <BookCard libro={libro} />
-            <div className="mt-2">
+            <BookCard libro={libro}> {/* chiamo il components perché lo riutilizzo in profilo e fa meno codice qua */}
               <button
                 type="button"
                 className="btn btn-primary me-2"
@@ -202,7 +201,7 @@ export default function Home() {
               >
                 Da Leggere
               </button>
-            </div>
+            </BookCard>
           </div>
         ))}
       </div>
