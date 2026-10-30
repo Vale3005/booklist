@@ -171,6 +171,12 @@ export default function Home() {
           </Button>
         </form>
 
+        {loading && (
+        <div className="mt-4 text-muted-foreground">
+          <strong>Caricamento Libri</strong>
+        </div>
+      )}
+
         {errore && (
           <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
             {errore}

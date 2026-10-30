@@ -73,7 +73,7 @@ export default function Login() {
     }
   }
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+    <div className="flex min-h-[80vh] items-center justify-center px-4 py-10">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Login Utente</CardTitle>
