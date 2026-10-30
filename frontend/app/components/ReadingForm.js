@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const endPoint = "http://localhost:8000/api/books";
 
@@ -137,79 +139,86 @@ export default function ReadingForm({ lettura, onRimuovi, onAggiorna }) {
   }
 
   return (
-    <div>
+    <div className="space-y-3">
       {/* Voto e recensione solo per i libri letti */}
       {lettura.status === "read" && (
         <>
-          <div className="mb-3">
-            <select
-              className="form-select"
-              value={voto}
-              onChange={(e) => setVoto(e.target.value)}
-              disabled={loading} // blocca la tendina mentre la richiesta è in corso
-            >
-              <option value="">Nessun voto</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
+          <select
+            className="h-9 w-full rounded-lg border border-input bg-transparent px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-50"
+            value={voto}
+            onChange={(e) => setVoto(e.target.value)}
+            disabled={loading} // blocca la tendina mentre la richiesta è in corso
+          >
+            <option value="">Nessun voto</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
 
-          <div className="mb-3">
-            <textarea
-              className="form-control"
-              rows="3"
-              placeholder="Scrivi una recensione..."
-              value={recensione}
-              onChange={(e) => setRecensione(e.target.value)}
-            ></textarea>
-          </div>
+          <Textarea
+            rows={3}
+            placeholder="Scrivi una recensione..."
+            value={recensione}
+            onChange={(e) => setRecensione(e.target.value)}
+          />
 
-          <button
+          <Button
             type="button"
-            className="btn btn-primary me-2"
+            className="w-full"
             onClick={salvaRecensione}
             disabled={loading}
           >
             Salva
-          </button>
+          </Button>
         </>
       )}
 
-      {lettura.status === "read" ? ( //operatore ternario se è stato letto oppure no 
-        <button
+      <div className="flex gap-2">
+        {lettura.status === "read" ? ( //operatore ternario se è stato letto oppure no 
+          <Button
+            type="button"
+            variant="secondary"
+            className="flex-1"
+            onClick={() => sposta("to_read")}
+            disabled={loading}
+          >
+            Da leggere
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            className="flex-1"
+            onClick={() => sposta("read")}
+            disabled={loading}
+          >
+            Letto
+          </Button>
+        )}
+
+        {/* Rimuovi c'è sempre, sia per Letti che per Da Leggere */}
+        <Button
           type="button"
-          className="btn btn-secondary me-2"
-          onClick={() => sposta("to_read")}
+          variant="outline"
+          className="flex-1 text-destructive"
+          onClick={rimuovi}
           disabled={loading}
         >
-          Da leggere
-        </button>
-      ) : (
-        <button
-          type="button"
-          className="btn btn-success me-2"
-          onClick={() => sposta("read")}
-          disabled={loading}
-        >
-          Letto
-        </button>
+          Rimuovi
+        </Button>
+      </div>
+
+      {errore && (
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+          {errore}
+        </div>
       )}
-
-      {/* Rimuovi c'è sempre, sia per Letti che per Da Leggere */}
-      <button
-        type="button"
-        className="btn btn-outline-danger"
-        onClick={rimuovi}
-        disabled={loading}
-      >
-        Rimuovi
-      </button>
-
-      {errore && <div className="alert alert-danger mt-3">{errore}</div>}
-      {messaggio && <div className="alert alert-success mt-3">{messaggio}</div>}
+      {messaggio && (
+        <div className="rounded-lg border border-green-600/50 bg-green-600/10 p-3 text-sm text-green-700">
+          {messaggio}
+        </div>
+      )}
     </div>
   );
 }

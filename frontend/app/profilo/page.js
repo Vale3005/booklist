@@ -71,29 +71,31 @@ export default function Profilo() {
   }
 
   return (
-    <main className="container py-5">
-      <h1> Il tuo profilo </h1>
+    <main className="mx-auto max-w-6xl px-4 py-10">
+      <h1 className="mb-6 text-3xl font-bold text-primary">Il tuo profilo</h1>
 
       {errore && (
-        <div className="alert alert-danger mt-4">
+        <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
           <strong>Errore:</strong> {errore}
         </div>
       )}
 
       {loading && (
-        <div className="mt-4">
+        <div className="mt-4 text-muted-foreground">
           <strong>Caricamento...</strong>
         </div>
       )}
 
-      <h2> Letti: </h2>
+      <h2 className="mt-8 text-2xl font-semibold">Letti:</h2>
       {letti.length === 0 && !loading && (
-        <p className="mt-3">Non hai ancora letto nessun libro.</p>
+        <p className="mt-3 text-muted-foreground">
+          Non hai ancora letto nessun libro.
+        </p>
       )}
 
-      <div className="row g-4 mt-3">
+      <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {letti.map((lettura) => (
-          <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div key={lettura.id}>
             <BookCard libro={lettura.book}>
               <ReadingForm
                 lettura={lettura}
@@ -105,13 +107,15 @@ export default function Profilo() {
         ))}
       </div>
 
-      <h2> Da Leggere: </h2>
+      <h2 className="mt-10 text-2xl font-semibold">Da Leggere:</h2>
       {daLeggere.length === 0 && !loading && (
-        <p className="mt-3">Non è presente nessun libro da leggere.</p>
+        <p className="mt-3 text-muted-foreground">
+          Non è presente nessun libro da leggere.
+        </p>
       )}
-      <div className="row g-4 mt-3">
+      <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {daLeggere.map((lettura) => (
-          <div key={lettura.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div key={lettura.id}>
             <BookCard libro={lettura.book}>
               <ReadingForm
                 lettura={lettura}
