@@ -1,19 +1,20 @@
+import { Card, CardContent } from "@/components/ui/card";
+
 export default function BookCard({ libro, children }) {
   return (
-    <div className="card h-100">
+    <Card className="h-full overflow-hidden pt-0">
       {libro.cover_url && (
         <img
           src={libro.cover_url}
-          className="card-img-top"
+          className="h-72 w-full object-cover"
           alt={libro.title}
-          style={{ height: "300px", objectFit: "cover" }}
         />
       )}
-      <div className="card-body">
-        <h5 className="card-title">{libro.title}</h5>
-        <p className="card-text">{libro.author}</p>
-        {children}
-      </div>
-    </div>
+      <CardContent className="flex flex-1 flex-col gap-2">
+        <h5 className="font-semibold leading-tight">{libro.title}</h5>
+        <p className="text-sm text-muted-foreground">{libro.author}</p>
+        <div className="mt-auto pt-2">{children}</div>
+      </CardContent>
+    </Card>
   );
 }

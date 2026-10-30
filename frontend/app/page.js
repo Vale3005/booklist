@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import BookCard from "./components/BookCard";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const endPoint1 = "http://localhost:8000/api/books/search";
 const endPoint2 = "http://localhost:8000/api/books";
@@ -132,75 +134,77 @@ export default function Home() {
   }, [router]);
 
   return (
-    <main className="container py-5">
-      <h1>Booklist</h1>
+    <main className="mx-auto max-w-6xl px-4 py-10">
+      <h1 className="mb-6 text-center text-3xl font-bold text-primary">
+        Booklist
+      </h1>
 
-      <div className="row justify-content-center">
-        <div className="col-12 col-md-8 col-lg-6">
-          <form className="input-group" onSubmit={cerca}>
-            <span className="input-group-text">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </span>
-            <input
-              className="form-control"
+      <div className="mx-auto w-full max-w-xl">
+        <form className="flex gap-2" onSubmit={cerca}>
+          <div className="relative flex-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <Input
+              className="pl-10"
               type="search"
               placeholder="Cerca un libro..."
               aria-label="Search"
               value={ricerca}
               onChange={(e) => setRicerca(e.target.value)}
             />
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={loading}
-            >
-              Cerca Libro
-            </button>
-          </form>
+          </div>
+          <Button type="submit" disabled={loading}>
+            Cerca Libro
+          </Button>
+        </form>
 
-          {errore && <div className="alert alert-danger mt-4">{errore}</div>}
-          {messaggio && (
-            <div className="alert alert-success mt-4">{messaggio}</div>
-          )}
-        </div>
+        {errore && (
+          <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+            {errore}
+          </div>
+        )}
+        {messaggio && (
+          <div className="mt-4 rounded-lg border border-green-600/50 bg-green-600/10 p-3 text-sm text-green-700">
+            {messaggio}
+          </div>
+        )}
       </div>
 
-      <div className="row g-4 mt-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {libri.map((libro) => (
-          <div
-            key={libro.open_library_key}
-            className="col-12 col-sm-6 col-md-4 col-lg-3"
-          >
-            <BookCard libro={libro}> {/* chiamo il components perché lo riutilizzo in profilo e fa meno codice qua */}
-              <button
-                type="button"
-                className="btn btn-primary me-2"
-                disabled={loading}
-                onClick={() => aggiungi(libro, "read")}
-              >
-                Letto
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                disabled={loading}
-                onClick={() => aggiungi(libro, "to_read")}
-              >
-                Da Leggere
-              </button>
+          <div key={libro.open_library_key}>
+            {/* chiamo il components perché lo riutilizzo in profilo e fa meno codice qua */}
+            <BookCard libro={libro}>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  disabled={loading}
+                  onClick={() => aggiungi(libro, "read")}
+                >
+                  Letto
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={loading}
+                  onClick={() => aggiungi(libro, "to_read")}
+                >
+                  Da Leggere
+                </Button>
+              </div>
             </BookCard>
           </div>
         ))}
