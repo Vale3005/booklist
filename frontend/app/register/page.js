@@ -73,13 +73,13 @@ export default function Register() {
     <div className="flex min-h-[80vh] items-center justify-center px-4 py-10">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Registrazione Utente</CardTitle>
+          <CardTitle className="text-2xl">Registrazione utente</CardTitle>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={registrati} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="exampleInputName">Nome Utente:</Label>
+              <Label htmlFor="exampleInputName">Nome utente:</Label>
               <Input
                 type="text"
                 id="exampleInputName"
@@ -93,7 +93,7 @@ export default function Register() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="exampleInputEmail1">Indirizzo Email:</Label>
+              <Label htmlFor="exampleInputEmail1">Indirizzo email:</Label>
               <Input
                 type="email"
                 id="exampleInputEmail1"
@@ -107,7 +107,7 @@ export default function Register() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="exampleInputPassword">Inserisci Password:</Label>
+              <Label htmlFor="exampleInputPassword">Inserisci password:</Label>
               <Input
                 type="password"
                 id="exampleInputPassword"
@@ -121,7 +121,7 @@ export default function Register() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="exampleInputPassword1">Conferma Password:</Label>
+              <Label htmlFor="exampleInputPassword1">Conferma password:</Label>
               <Input
                 type="password"
                 id="exampleInputPassword1"

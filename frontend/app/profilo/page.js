@@ -22,7 +22,7 @@ export default function Profilo() {
   const [tabAttiva, setTabAttiva] = useState("read");
   const tabs = [
     { value: "read", label: "Letto" },
-    { value: "to_read", label: "Da Leggere" },
+    { value: "to_read", label: "Da leggere" },
   ];
   const visibili = letture.filter((l) => l.status === tabAttiva);
 

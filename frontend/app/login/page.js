@@ -76,13 +76,13 @@ export default function Login() {
     <div className="flex min-h-[80vh] items-center justify-center px-4 py-10">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Login Utente</CardTitle>
+          <CardTitle className="text-2xl">Login utente</CardTitle>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={login} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="exampleInputEmail1">Indirizzo Email:</Label>
+              <Label htmlFor="exampleInputEmail1">Indirizzo email:</Label>
               <Input
                 type="email"
                 id="exampleInputEmail1"
@@ -95,7 +95,7 @@ export default function Login() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="exampleInputPassword">Inserisci Password:</Label>
+              <Label htmlFor="exampleInputPassword">Inserisci password:</Label>
               <Input
                 type="password"
                 id="exampleInputPassword"

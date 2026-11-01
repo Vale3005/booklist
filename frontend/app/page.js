@@ -162,7 +162,7 @@ export default function Home() {
             />
           </div>
           <Button type="submit" className="h-12 px-6 text-base" disabled={loading}>
-            Cerca Libro
+            Cerca libro
           </Button>
         </form>
 
@@ -205,7 +205,7 @@ export default function Home() {
                     disabled={loading}
                     onClick={() => aggiungi(libro, "to_read")}
                   >
-                    Da Leggere
+                    Da leggere
                   </Button>
                 </div>
                 <Button
