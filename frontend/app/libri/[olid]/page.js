@@ -1,11 +1,8 @@
 "use client";
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import BookCard from "../../components/BookCard";
-import ReadingForm from "../../components/ReadingForm";
 
 const endPoint = "http://localhost:8000/api/books/details";
 
@@ -15,7 +12,6 @@ export default function PaginaLibro() {
   const [loading, setLoading] = useState(false);
   const [errore, setErrore] = useState("");
   const [libro, setLibro] = useState(null);
-
 
   useEffect(() => {
     async function carica() {
@@ -39,10 +35,9 @@ export default function PaginaLibro() {
           return;
         }
 
-        
         if (res.status === 404) {
-            setErrore("Nessun Libro Trovato");
-            return;
+          setErrore("Nessun Libro Trovato");
+          return;
         }
 
         // Altri errori (server, rete etc)
@@ -60,35 +55,44 @@ export default function PaginaLibro() {
       }
     }
     carica();
-  }, [router, olid]); 
+  }, [router, olid]);
 
-return (
-  <main className="mx-auto max-w-4xl px-4 py-10">
-    {errore && (
-      <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
-        {errore}
-      </div>
-    )}
-    {loading && <p className="text-muted-foreground">Caricamento...</p>}
-
-    {libro && (
-      <div className="flex flex-col gap-8 md:flex-row">
-        {/* Colonna sinistra: copertina */}
-        <div className="md:w-1/3">
-          <img className="w-full rounded-lg object-cover" src={libro.cover_url} alt="copertina" />
+  return (
+    <main className="mx-auto max-w-4xl px-4 py-10">
+      {errore && (
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+          {errore}
         </div>
+      )}
+      {loading && <p className="text-muted-foreground">Caricamento...</p>}
 
-        {/* Colonna destra: dettagli */}
-        <div className="flex-1 space-y-4">
-          <h1 className="text-3xl font-bold">{libro.title} - {libro.author}</h1>
-          <p className="text-lg text-muted-foreground">{libro.year}</p>
-          <p className="text-sm text-muted-foreground">{libro.description}</p>
-          <p className="leading-relaxed"></p>
+      {libro && (
+        <div className="flex flex-col gap-8 md:flex-row">
+          {/* Colonna sinistra: copertina */}
+          <div className="md:w-1/3">
+            {libro.cover_url && (
+              <img
+                className="w-full rounded-lg object-cover"
+                src={libro.cover_url}
+                alt={libro.title}
+              />
+            )}
+          </div>
+
+          {/* Colonna destra: dettagli */}
+          <div className="flex-1 space-y-4">
+            <h1 className="text-3xl font-bold">
+              {libro.title} - {libro.author}
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              {libro.year || "Data di uscita non disponibile"}
+            </p>
+            <p className="leading-relaxed">
+              {libro.description || "Trama non disponibile"}
+            </p>
+          </div>
         </div>
-      </div>
-    )}
-  </main>
-);
-
+      )}
+    </main>
+  );
 }
-

@@ -12,7 +12,7 @@ export default function Hearts({ value, onChange, size = "md" }) {
     <div className={`flex items-center gap-1 ${dimension}`}>
       {[1, 2, 3, 4, 5].map((heart) => {
         const filled = value !== null && heart <= value; //se c'è un voto e 
-        // il numero è minore del valore di heart (5) allora è filled
+        // il cuore si riempie se il numero è minore o = al voto 
 
         if (!interactive) { //se è false restituisce span, non cliccabile, 
         // con il cuore grigio se non è filled e rosso se è filled

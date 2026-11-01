@@ -5,13 +5,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import BookCard from "../components/BookCard";
 import ReadingForm from "../components/ReadingForm";
-import Hearts from "../components/Hearts";
 
 const endPoint = "http://localhost:8000/api/books";
 
 export default function Profilo() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [errore, setErrore] = useState("");
   const [letture, setLetture] = useState([]);
 
