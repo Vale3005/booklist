@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import BookCard from "../components/BookCard";
 import ReadingForm from "../components/ReadingForm";
-import Hearts from "../components/Hearts"
+import Hearts from "../components/Hearts";
 
 const endPoint = "http://localhost:8000/api/books";
 
@@ -14,8 +14,18 @@ export default function Profilo() {
   const [loading, setLoading] = useState(false);
   const [errore, setErrore] = useState("");
   const [letture, setLetture] = useState([]);
+
+  //per il contatore: 
   const letti = letture.filter((lettura) => lettura.status === "read");
   const daLeggere = letture.filter((lettura) => lettura.status === "to_read");
+
+  //per la tab divisa: 
+  const [tabAttiva, setTabAttiva] = useState("read");
+  const tabs = [
+    { value: "read", label: "Letto" },
+    { value: "to_read", label: "Da Leggere" },
+  ];
+  const visibili = letture.filter((l) => l.status === tabAttiva);
 
   useEffect(() => {
     async function carica() {
@@ -87,46 +97,54 @@ export default function Profilo() {
         </div>
       )}
 
-      <h2 className="mt-8 text-2xl font-semibold">Letti:</h2>
-      {letti.length === 0 && !loading && (
-        <p className="mt-3 text-muted-foreground">
-          Non hai ancora letto nessun libro.
-        </p>
-      )}
+      {/* Barra delle tab */}
+<div className="mt-6 flex gap-1 rounded-lg border border-stone-200 bg-white p-1">
+  {tabs.map((tab) => (
+    <button
+      key={tab.value}
+      onClick={() => setTabAttiva(tab.value)}
+      className={`flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-3 font-semibold transition ${
+        tabAttiva === tab.value
+          ? "bg-amber-700 text-white"
+          : "text-stone-600 hover:bg-stone-100"
+      }`}
+    >
+      <span className="text-lg">{tab.label}</span>
+      <span
+        className={`rounded-full px-2 py-0.5 text-sm ${
+          tabAttiva === tab.value
+            ? "bg-white/25 text-white"
+            : "bg-stone-200 text-stone-700"
+        }`}
+      >
+        {tab.value === "read" ? letti.length : daLeggere.length}
+      </span>
+    </button>
+  ))}
+</div>
 
-      <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {letti.map((lettura) => (
-          <div key={lettura.id}>
-            <BookCard libro={lettura.book}>
-              <ReadingForm
-                lettura={lettura}
-                onRimuovi={rimuoviLettura}
-                onAggiorna={aggiornaLettura}
-              />
-            </BookCard>
-          </div>
-        ))}
-      </div>
-
-      <h2 className="mt-10 text-2xl font-semibold">Da Leggere:</h2>
-      {daLeggere.length === 0 && !loading && (
-        <p className="mt-3 text-muted-foreground">
-          Non è presente nessun libro da leggere.
-        </p>
+      {/* Lista filtrata in base alla tab attiva */}
+      {!loading && visibili.length === 0 ? (
+        <div className="mt-6 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center text-sm text-stone-500">
+          {tabAttiva === "read"
+            ? "Non hai ancora letto nessun libro."
+            : "Non è presente nessun libro da leggere."}
+        </div>
+      ) : (
+        <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {visibili.map((lettura) => (
+            <div key={lettura.id}>
+              <BookCard libro={lettura.book}>
+                <ReadingForm
+                  lettura={lettura}
+                  onRimuovi={rimuoviLettura}
+                  onAggiorna={aggiornaLettura}
+                />
+              </BookCard>
+            </div>
+          ))}
+        </div>
       )}
-      <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {daLeggere.map((lettura) => (
-          <div key={lettura.id}>
-            <BookCard libro={lettura.book}>
-              <ReadingForm
-                lettura={lettura}
-                onRimuovi={rimuoviLettura}
-                onAggiorna={aggiornaLettura}
-              />
-            </BookCard>
-          </div>
-        ))}
-      </div>
     </main>
   );
 }

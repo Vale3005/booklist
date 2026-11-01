@@ -12,11 +12,10 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Controlla il token a ogni cambio di pagina
   useEffect(() => {
     const token = localStorage.getItem("token");
     setLoggato(!!token);
-    setAperto(false); // chiude il menu mobile quando cambi pagina
+    setAperto(false);
   }, [pathname]);
 
   if (!loggato) {
@@ -43,26 +42,28 @@ export default function Navbar() {
   }
 
   const linkClass =
-  "text-sm font-medium text-muted-foreground hover:text-primary transition-colors";
+    "text-base font-medium text-muted-foreground hover:text-primary transition-colors";
 
   return (
     <nav className="border-b bg-background">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/" className="text-lg font-bold text-primary">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <Link href="/" className="text-2xl font-bold text-primary">
           Booklist
         </Link>
 
         {/* Menu desktop */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-8 md:flex">
           <Link href="/" className={linkClass}>Home</Link>
           <Link href="/profilo" className={linkClass}>Profilo</Link>
           <Link href="/impostazioni" className={linkClass}>Impostazioni</Link>
-          <Button variant="outline" onClick={logout}>Esci</Button>
+          <Button variant="outline" className="h-10 text-base" onClick={logout}>
+            Esci
+          </Button>
         </div>
 
         {/* Bottone hamburger (solo telefono) */}
         <button
-          className="md:hidden"
+          className="text-2xl md:hidden"
           onClick={() => setAperto(!aperto)}
           aria-label="Apri menu"
         >
@@ -72,11 +73,13 @@ export default function Navbar() {
 
       {/* Menu telefono */}
       {aperto && (
-        <div className="flex flex-col gap-3 border-t px-4 py-3 md:hidden">
-          <Link href="/" className={linkClass}>Home</Link>
-          <Link href="/profilo" className={linkClass}>Profilo</Link>
-          <Link href="/impostazioni" className={linkClass}>Impostazioni</Link>
-          <Button variant="outline" onClick={logout}>Esci</Button>
+        <div className="flex flex-col gap-4 border-t px-4 py-4 md:hidden">
+          <Link href="/" className={`${linkClass} text-lg`}>Home</Link>
+          <Link href="/profilo" className={`${linkClass} text-lg`}>Profilo</Link>
+          <Link href="/impostazioni" className={`${linkClass} text-lg`}>Impostazioni</Link>
+          <Button variant="outline" className="h-11 text-base" onClick={logout}>
+            Esci
+          </Button>
         </div>
       )}
     </nav>

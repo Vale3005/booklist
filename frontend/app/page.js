@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import BookCard from "./components/BookCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,7 +42,6 @@ export default function Home() {
         }),
       });
 
-      // Token scaduto o non valido torna al login
       if (res.status === 401) {
         localStorage.removeItem("token");
         router.push("/login");
@@ -62,7 +60,6 @@ export default function Home() {
         return;
       }
 
-      // Altri errori (server, rete etc)
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       }
@@ -81,7 +78,7 @@ export default function Home() {
     e.preventDefault();
 
     if (ricerca.trim() === "") {
-      setErrore("Scrivi un titolo da cercare"); //evita campo vuoto
+      setErrore("Scrivi un titolo da cercare");
       return;
     }
     setLoading(true);
@@ -99,7 +96,6 @@ export default function Home() {
         },
       });
 
-      // Token scaduto o non valido torna al login
       if (res.status === 401) {
         localStorage.removeItem("token");
         router.push("/login");
@@ -112,7 +108,6 @@ export default function Home() {
         return;
       }
 
-      // Altri errori (server, rete etc)
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       }
@@ -127,26 +122,25 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); //legge il valore di setItem nel login con il get
+    const token = localStorage.getItem("token");
     if (!token) {
-      //se utente non è loggato
       router.push("/login");
     }
   }, [router]);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="mb-6 text-center text-3xl font-bold text-primary">
+      <h1 className="mb-8 text-center text-4xl font-bold text-primary">
         Booklist
       </h1>
 
-      <div className="mx-auto w-full max-w-xl">
+      <div className="mx-auto w-full max-w-2xl">
         <form className="flex gap-2" onSubmit={cerca}>
           <div className="relative flex-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -159,7 +153,7 @@ export default function Home() {
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
             <Input
-              className="pl-10"
+              className="h-12 pl-11 text-base"
               type="search"
               placeholder="Cerca un libro..."
               aria-label="Search"
@@ -167,52 +161,56 @@ export default function Home() {
               onChange={(e) => setRicerca(e.target.value)}
             />
           </div>
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" className="h-12 px-6 text-base" disabled={loading}>
             Cerca Libro
           </Button>
         </form>
 
         {loading && (
-          <div className="mt-4 text-muted-foreground">
+          <div className="mt-4 text-base text-muted-foreground">
             <strong>Caricamento Libri</strong>
           </div>
         )}
 
         {errore && (
-          <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+          <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-base text-destructive">
             {errore}
           </div>
         )}
         {messaggio && (
-          <div className="mt-4 rounded-lg border border-green-600/50 bg-green-600/10 p-3 text-sm text-green-700">
+          <div className="mt-4 rounded-lg border border-green-600/50 bg-green-600/10 p-3 text-base text-green-700">
             {messaggio}
           </div>
         )}
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {libri.map((libro) => (
           <div key={libro.open_library_key}>
-            {/* chiamo il components perché lo riutilizzo in profilo e fa meno codice qua */}
             <BookCard libro={libro}>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    className="h-11 flex-1 text-base"
+                    disabled={loading}
+                    onClick={() => aggiungi(libro, "read")}
+                  >
+                    Letto
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-11 flex-1 text-base"
+                    disabled={loading}
+                    onClick={() => aggiungi(libro, "to_read")}
+                  >
+                    Da Leggere
+                  </Button>
+                </div>
                 <Button
-                  type="button"
-                  disabled={loading}
-                  onClick={() => aggiungi(libro, "read")}
-                >
-                  Letto
-                </Button>
-                <Button
-                  type="button"
                   variant="outline"
-                  disabled={loading}
-                  onClick={() => aggiungi(libro, "to_read")}
-                >
-                  Da Leggere
-                </Button>
-                <Button
-                  variant="outline"
+                  className="h-11 text-base"
                   render={
                     <Link
                       href={"/libri/" + libro.open_library_key.split("/").pop()}
