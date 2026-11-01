@@ -259,8 +259,23 @@ class BookController extends Controller
             $cover = "https://covers.openlibrary.org/b/id/{$data['covers'][0]}-L.jpg";
         }
 
+        // parte da autore sconosciuto e cambia solo se tutti i passaggi vanno a buon fine
+        $author = 'Autore sconosciuto';
+        if (isset($data['authors'][0]['author']['key'])) {
+            $authorKey = $data['authors'][0]['author']['key'];
+            $authorResponse = Http::get("https://openlibrary.org{$authorKey}.json");
+
+            if ($authorResponse->successful()) {
+                $authorData = $authorResponse->json();
+                if (isset($authorData['name'])) {
+                    $author = $authorData['name'];
+                }
+            }
+        }
+
         return response()->json([
             'title' => $data['title'] ?? null,
+            'author' => $author,
             'description' => $description,
             'year' => $data['first_publish_date'] ?? null,
             'cover_url' => $cover,

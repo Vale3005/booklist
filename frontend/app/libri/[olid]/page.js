@@ -14,7 +14,7 @@ export default function PaginaLibro() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errore, setErrore] = useState("");
-  const [lettura, setLettura] = useState(null);
+  const [libro, setLibro] = useState(null);
 
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function PaginaLibro() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch(endPoint + olid, {
+        const res = await fetch(endPoint + "/" + olid, {
           method: "GET",
           headers: {
             Accept: "application/json",
@@ -52,7 +52,7 @@ export default function PaginaLibro() {
 
         const data = await res.json();
         console.log(data);
-        setLettura(data);
+        setLibro(data);
       } catch (err) {
         setErrore(err.message);
       } finally {
@@ -60,7 +60,7 @@ export default function PaginaLibro() {
       }
     }
     carica();
-  }, [router, id]); 
+  }, [router, olid]); 
 
 return (
   <main className="mx-auto max-w-4xl px-4 py-10">
@@ -71,18 +71,18 @@ return (
     )}
     {loading && <p className="text-muted-foreground">Caricamento...</p>}
 
-    {lettura && (
+    {libro && (
       <div className="flex flex-col gap-8 md:flex-row">
         {/* Colonna sinistra: copertina */}
         <div className="md:w-1/3">
-          <img className="w-full rounded-lg object-cover" src="" alt="" />
+          <img className="w-full rounded-lg object-cover" src={libro.cover_url} alt="copertina" />
         </div>
 
         {/* Colonna destra: dettagli */}
         <div className="flex-1 space-y-4">
-          <h1 className="text-3xl font-bold"></h1>
-          <p className="text-lg text-muted-foreground"></p>
-          <p className="text-sm text-muted-foreground"></p>
+          <h1 className="text-3xl font-bold">{libro.title} - {libro.author}</h1>
+          <p className="text-lg text-muted-foreground">{libro.year}</p>
+          <p className="text-sm text-muted-foreground">{libro.description}</p>
           <p className="leading-relaxed"></p>
         </div>
       </div>
