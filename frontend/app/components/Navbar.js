@@ -56,7 +56,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-6 md:flex">
           <Link href="/" className={linkClass}>Home</Link>
           <Link href="/profilo" className={linkClass}>Profilo</Link>
-          <Link href="#" className={linkClass}>Impostazioni</Link>
+          <Link href="/impostazioni" className={linkClass}>Impostazioni</Link>
           <Button variant="outline" onClick={logout}>Esci</Button>
         </div>
 
@@ -75,7 +75,7 @@ export default function Navbar() {
         <div className="flex flex-col gap-3 border-t px-4 py-3 md:hidden">
           <Link href="/" className={linkClass}>Home</Link>
           <Link href="/profilo" className={linkClass}>Profilo</Link>
-          <Link href="#" className={linkClass}>Impostazioni</Link>
+          <Link href="/impostazioni" className={linkClass}>Impostazioni</Link>
           <Button variant="outline" onClick={logout}>Esci</Button>
         </div>
       )}

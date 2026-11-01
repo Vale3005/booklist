@@ -4,12 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import Hearts from "../components/Hearts"; 
 
 const endPoint = "http://localhost:8000/api/books";
 
 export default function ReadingForm({ lettura, onRimuovi, onAggiorna }) {
   const router = useRouter();
-  const [voto, setVoto] = useState(lettura.rating || "");
+  const [voto, setVoto] = useState(lettura.rating ?? null);
   const [recensione, setRecensione] = useState(lettura.review || "");
   const [loading, setLoading] = useState(false);
   const [errore, setErrore] = useState("");
@@ -93,8 +94,7 @@ export default function ReadingForm({ lettura, onRimuovi, onAggiorna }) {
   }
 
   function salvaRecensione() {
-    const votoNumero = voto === "" ? null : Number(voto);
-    salva(votoNumero, recensione);
+    salva(voto, recensione);
   }
 
   async function sposta(nuovoStato) {
@@ -143,19 +143,7 @@ export default function ReadingForm({ lettura, onRimuovi, onAggiorna }) {
       {/* Voto e recensione solo per i libri letti */}
       {lettura.status === "read" && (
         <>
-          <select
-            className="h-9 w-full rounded-lg border border-input bg-transparent px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-50"
-            value={voto}
-            onChange={(e) => setVoto(e.target.value)}
-            disabled={loading} // blocca la tendina mentre la richiesta è in corso
-          >
-            <option value="">Nessun voto</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
+          <Hearts value={voto} onChange={setVoto} />
 
           <Textarea
             rows={3}
