@@ -6,6 +6,7 @@ import { useState } from "react";
 import BookCard from "./components/BookCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const endPoint1 = "http://localhost:8000/api/books/search";
 const endPoint2 = "http://localhost:8000/api/books";
@@ -172,10 +173,10 @@ export default function Home() {
         </form>
 
         {loading && (
-        <div className="mt-4 text-muted-foreground">
-          <strong>Caricamento Libri</strong>
-        </div>
-      )}
+          <div className="mt-4 text-muted-foreground">
+            <strong>Caricamento Libri</strong>
+          </div>
+        )}
 
         {errore && (
           <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
@@ -209,6 +210,17 @@ export default function Home() {
                   onClick={() => aggiungi(libro, "to_read")}
                 >
                   Da Leggere
+                </Button>
+                <Button
+                  variant="outline"
+                  render={
+                    <Link
+                      href={"/libri/" + libro.open_library_key.split("/").pop()}
+                    />
+                  }
+                  nativeButton={false}
+                >
+                  Informazioni
                 </Button>
               </div>
             </BookCard>
