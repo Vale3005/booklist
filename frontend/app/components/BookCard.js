@@ -9,7 +9,7 @@ export default function BookCard({ libro, children }) {
         <Link href={"/libri/" + olid}>
           <img
             src={libro.cover_url}
-            className="aspect-[2/3] w-full object-cover"
+            className="aspect-2/3 w-full object-cover"
             alt={libro.title}
           />
         </Link>
