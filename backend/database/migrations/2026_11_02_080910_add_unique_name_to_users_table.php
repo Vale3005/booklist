@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unique('name');
-        });
+        }); //modifica la tabella users già esistente 
     }
 
     public function down(): void
