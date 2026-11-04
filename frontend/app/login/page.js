@@ -21,10 +21,10 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [errore, setErrore] = useState("");
   const [errori, setErrori] = useState({});
-  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
-  async function login(e) {
+  async function accedi(e) {
     e.preventDefault();
     setLoading(true);
     setErrore("");
@@ -38,7 +38,7 @@ export default function Login() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email,
+          login: login,
           password: password,
           
         }),
@@ -54,7 +54,7 @@ export default function Login() {
 
       // Credenziali sbagliate: Laravel risponde 401 
       if (res.status === 401) {
-        setErrore("Email o password non corretti");
+        setErrore("Credenziali non corrette");
         return;
       }
 
@@ -80,17 +80,17 @@ export default function Login() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={login} className="space-y-4">
+          <form onSubmit={accedi} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="exampleInputEmail1">Indirizzo email:</Label>
+              <Label htmlFor="exampleInputEmail1">Nome utente o email:</Label>
               <Input
-                type="email"
                 id="exampleInputEmail1"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
+                autoComplete="username"
               />
-              {errori.email && (
-                <p className="text-sm text-destructive">{errori.email[0]}</p>
+              {errori.login && (
+                <p className="text-sm text-destructive">{errori.login[0]}</p>
               )}
             </div>
 
@@ -101,6 +101,7 @@ export default function Login() {
                 id="exampleInputPassword"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
               />
               {errori.password && (
                 <p className="text-sm text-destructive">{errori.password[0]}</p>
