@@ -33,5 +33,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 
 Route::put('/account', [UserController::class, 'update'])->middleware('auth:sanctum'); 
-Route::put('/account', [UserController::class, 'updatePassword'])->middleware('auth:sanctum'); 
+Route::put('/account/password', [UserController::class, 'updatePassword'])->middleware('auth:sanctum'); 
 Route::delete('/account', [UserController::class, 'destroy'])->middleware('auth:sanctum'); 

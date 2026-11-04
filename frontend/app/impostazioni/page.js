@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ProfileForm from "../components/ProfileForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -79,9 +80,7 @@ export default function Impostazioni() {
 
       {/* Controllo temporaneo: serve solo a vedere che i dati arrivano */}
       {utente && (
-        <p>
-          {utente.name} - {utente.email}
-        </p>
+        <ProfileForm utente={utente} onAggiorna={setUtente} />
       )}
     </main>
   );
