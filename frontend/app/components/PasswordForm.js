@@ -135,14 +135,6 @@ export default function PasswordForm() {
             <Button type="submit" className="flex-1" disabled={loading}>
               {loading ? "Salvataggio..." : "Salva"}
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1"
-              onClick={() => router.push("/")}
-            >
-              Torna alla home
-            </Button>
           </div>
 
           {errore && (

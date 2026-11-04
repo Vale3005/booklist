@@ -73,7 +73,7 @@ export default function ProfileForm({ utente, onAggiorna }) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-2xl">Gestione nome utente o email:</CardTitle>
+        <CardTitle className="text-2xl">Cambia nome utente o email</CardTitle>
       </CardHeader>
 
       <CardContent>
@@ -109,14 +109,7 @@ export default function ProfileForm({ utente, onAggiorna }) {
             <Button type="submit" className="flex-1" disabled={loading}>
               {loading ? "Salvataggio..." : "Salva"}
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1"
-              onClick={() => router.push("/")}
-            >
-              Torna alla home
-            </Button>
+            
           </div>
 
           {errore && (

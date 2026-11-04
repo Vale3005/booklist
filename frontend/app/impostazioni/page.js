@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ProfileForm from "../components/ProfileForm";
+import PasswordForm from "../components/PasswordForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,8 +62,7 @@ export default function Impostazioni() {
     carica();
   }, [router]);
 
-
- return (
+  return (
     <main className="mx-auto max-w-2xl px-4 py-10">
       <h1 className="mb-6 text-3xl font-bold text-primary">Impostazioni</h1>
 
@@ -79,9 +79,11 @@ export default function Impostazioni() {
       )}
 
       {/* Controllo temporaneo: serve solo a vedere che i dati arrivano */}
-      {utente && (
-        <ProfileForm utente={utente} onAggiorna={setUtente} />
-      )}
+      {utente && <ProfileForm utente={utente} onAggiorna={setUtente} />}
+
+      <div className="mt-6">
+        <PasswordForm />
+      </div>
     </main>
   );
 }
