@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ProfileForm from "../components/ProfileForm";
 import PasswordForm from "../components/PasswordForm";
+import DeleteForm from "../components/DeleteForm"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -83,6 +84,9 @@ export default function Impostazioni() {
 
       <div className="mt-6">
         <PasswordForm />
+        <div className="mt-6">
+          <DeleteForm />
+        </div>
       </div>
     </main>
   );

@@ -52,13 +52,19 @@ export default function ProfileForm({ utente, onAggiorna }) {
 
       // Errori di validazione (nome o email già usati, formato sbagliato...)
       if (res.status === 422) {
-        setErrori(data.errors || {}); //evita l'errore se erros non arriva
+        if (data.errors) {
+          setErrori(data.errors);
+        } else {
+          setErrore(data.message);
+        }
         return;
       }
 
       // Altri errori (server, rete etc)
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        throw new Error(
+          data.message || `HTTP ${res.status}: ${res.statusText}`,
+        );
       }
 
       onAggiorna(data); // la PUT restituisce l'utente aggiornato
