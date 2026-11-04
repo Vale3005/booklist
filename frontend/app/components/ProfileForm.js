@@ -73,7 +73,7 @@ export default function ProfileForm({ utente, onAggiorna }) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-2xl">Dati account</CardTitle>
+        <CardTitle className="text-2xl">Gestione nome utente o email:</CardTitle>
       </CardHeader>
 
       <CardContent>
