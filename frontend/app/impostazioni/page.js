@@ -5,17 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ProfileForm from "../components/ProfileForm";
 import PasswordForm from "../components/PasswordForm";
-import DeleteForm from "../components/DeleteForm"
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import DeleteForm from "../components/DeleteForm"; 
 
 const endPoint = "http://localhost:8000/api/user";
 

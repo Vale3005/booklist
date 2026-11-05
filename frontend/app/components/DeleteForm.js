@@ -86,9 +86,9 @@ export default function DeleteForm() {
         </p>
         <form onSubmit={elimina} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="password">Password attuale:</Label>
+            <Label htmlFor="delete_password">Password attuale:</Label>
             <Input
-              id="password"
+              id="delete_password"
               type="password"
               value={passwordIniziale}
               autoComplete="current-password"
