@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const endPoint = "http://localhost:8000/api/books/details";
 
@@ -59,6 +60,7 @@ export default function PaginaLibro() {
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
+      <Button variant="outline" onClick={() => router.back()}> Indietro </Button>
       {errore && (
         <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
           {errore}
