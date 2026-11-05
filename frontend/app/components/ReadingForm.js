@@ -4,11 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import Hearts from "../components/Hearts"; 
+import Hearts from "../components/Hearts";
 
 const endPoint = "http://localhost:8000/api/books";
 
-export default function ReadingForm({ lettura, onRimuovi, onAggiorna }) {
+export default function ReadingForm({
+  lettura,
+  onRimuovi,
+  onAggiorna,
+  onMessaggio,
+}) {
   const router = useRouter();
   const [voto, setVoto] = useState(lettura.rating ?? null);
   const [recensione, setRecensione] = useState(lettura.review || "");
@@ -136,6 +141,12 @@ export default function ReadingForm({ lettura, onRimuovi, onAggiorna }) {
     } finally {
       setLoading(false);
     }
+    
+    onMessaggio(
+      nuovoStato === "read"
+        ? "Libro spostato in Letto"
+        : "Libro spostato in Da leggere",
+    );
   }
 
   return (
@@ -164,7 +175,7 @@ export default function ReadingForm({ lettura, onRimuovi, onAggiorna }) {
       )}
 
       <div className="flex gap-2">
-        {lettura.status === "read" ? ( //operatore ternario se è stato letto oppure no 
+        {lettura.status === "read" ? ( //operatore ternario se è stato letto oppure no
           <Button
             type="button"
             variant="secondary"

@@ -13,6 +13,7 @@ export default function Profilo() {
   const [loading, setLoading] = useState(true);
   const [errore, setErrore] = useState("");
   const [letture, setLetture] = useState([]);
+  const [messaggio, setMessaggio] = useState(""); 
 
   //per il contatore: 
   const letti = letture.filter((lettura) => lettura.status === "read");
@@ -96,6 +97,12 @@ export default function Profilo() {
         </div>
       )}
 
+      {messaggio && (
+          <div className="mt-4 rounded-lg border border-green-600/50 bg-green-600/10 p-3 text-base text-green-700">
+            {messaggio}
+          </div>
+        )}
+
       {/* Barra delle tab */}
 <div className="mt-6 flex gap-1 rounded-lg border border-stone-200 bg-white p-1">
   {tabs.map((tab) => (
@@ -138,6 +145,7 @@ export default function Profilo() {
                   lettura={lettura}
                   onRimuovi={rimuoviLettura}
                   onAggiorna={aggiornaLettura}
+                  onMessaggio={setMessaggio} 
                 />
               </BookCard>
             </div>
