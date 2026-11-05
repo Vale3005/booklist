@@ -78,12 +78,17 @@ export default function Home() {
     e.preventDefault();
 
     if (ricerca.trim() === "") {
-      setErrore("Scrivi un titolo da cercare");
+      setLibri([]);
+  setErrore("");
+  setMessaggio("");
+  sessionStorage.removeItem("ricerca");
+  sessionStorage.removeItem("libri");
       return;
     }
     setLoading(true);
     setErrore("");
     setMessaggio("");
+
 
     try {
       const token = localStorage.getItem("token");
@@ -105,6 +110,8 @@ export default function Home() {
       if (res.status === 404) {
         setErrore("Nessun Libro Trovato");
         setLibri([]);
+        sessionStorage.removeItem("ricerca"); //così non si resetta la ricerca
+        sessionStorage.removeItem("libri");
         return;
       }
 
@@ -114,6 +121,8 @@ export default function Home() {
 
       const data = await res.json();
       setLibri(data);
+      sessionStorage.setItem("ricerca", ricerca); //è come localStorage usato per il token, ma dura solo finché è aperta la scheda broswer, sopravvive ai campi pagina e ricaricamento, sparisce alla chiusura della scheda
+      sessionStorage.setItem("libri", JSON.stringify(data)); //si salva data e non libri perché è il valore aggiornato
     } catch (err) {
       setErrore(err.message);
     } finally {
@@ -127,6 +136,16 @@ export default function Home() {
       router.push("/login");
     }
   }, [router]);
+
+  useEffect(() => {
+    const ricercaSalvata = sessionStorage.getItem("ricerca");
+    const libriSalvati = sessionStorage.getItem("libri");
+
+    if (libriSalvati) {
+      setRicerca(ricercaSalvata || ""); // rimette nella barra il testo salvato 
+      setLibri(JSON.parse(libriSalvati)); // riporta il testo ad una lista, altrimenti .map darebbe errore 
+    }
+  }, []);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
@@ -161,7 +180,11 @@ export default function Home() {
               onChange={(e) => setRicerca(e.target.value)}
             />
           </div>
-          <Button type="submit" className="h-12 px-6 text-base" disabled={loading}>
+          <Button
+            type="submit"
+            className="h-12 px-6 text-base"
+            disabled={loading}
+          >
             Cerca libro
           </Button>
         </form>
