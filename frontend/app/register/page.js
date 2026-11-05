@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import PasswordInput from "../components/PasswordInput";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -108,8 +109,8 @@ export default function Register() {
 
             <div className="space-y-2">
               <Label htmlFor="exampleInputPassword">Inserisci password:</Label>
-              <Input
-                type="password"
+              <PasswordInput
+                
                 id="exampleInputPassword"
                 autoComplete="new-password"
                 value={password}
@@ -122,8 +123,8 @@ export default function Register() {
 
             <div className="space-y-2">
               <Label htmlFor="exampleInputPassword1">Conferma password:</Label>
-              <Input
-                type="password"
+              <PasswordInput
+                
                 id="exampleInputPassword1"
                 autoComplete="new-password"
                 value={passwordConfirm}

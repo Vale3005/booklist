@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import PasswordInput from "../components/PasswordInput";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const endPoint = "http://localhost:8000/api/account";
@@ -89,9 +90,8 @@ export default function DeleteForm() {
         <form onSubmit={elimina} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="delete_password">Password attuale:</Label>
-            <Input
+            <PasswordInput
               id="delete_password"
-              type="password"
               value={passwordIniziale}
               autoComplete="current-password"
               onChange={(e) => setPasswordIniziale(e.target.value)}

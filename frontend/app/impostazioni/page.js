@@ -7,6 +7,7 @@ import ProfileForm from "../components/ProfileForm";
 import PasswordForm from "../components/PasswordForm";
 import DeleteForm from "../components/DeleteForm"; 
 
+
 const endPoint = "http://localhost:8000/api/user";
 
 export default function Impostazioni() {

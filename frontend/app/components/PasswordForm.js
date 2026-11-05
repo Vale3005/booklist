@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import PasswordInput from "../components/PasswordInput";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const endPoint = "http://localhost:8000/api/account/password";
@@ -90,9 +91,8 @@ export default function PasswordForm() {
         <form onSubmit={salva} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="current_password">Password attuale:</Label>
-            <Input
+            <PasswordInput
               id="current_password"
-              type="password"
               value={passwordIniziale}
               autoComplete="current-password"
               onChange={(e) => setPasswordIniziale(e.target.value)}
@@ -106,8 +106,7 @@ export default function PasswordForm() {
 
           <div className="space-y-2">
             <Label htmlFor="password">Nuova password:</Label>
-            <Input
-              type="password"
+            <PasswordInput
               id="password"
               value={nuovaPassword}
               onChange={(e) => setPassword(e.target.value)}
@@ -122,8 +121,7 @@ export default function PasswordForm() {
             <Label htmlFor="password_confirmation">
               Conferma nuova password:
             </Label>
-            <Input
-              type="password"
+            <PasswordInput
               id="password_confirmation"
               value={confermaPassword}
               onChange={(e) => setConfermaPassword(e.target.value)}
