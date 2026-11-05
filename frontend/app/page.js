@@ -79,16 +79,15 @@ export default function Home() {
 
     if (ricerca.trim() === "") {
       setLibri([]);
-  setErrore("");
-  setMessaggio("");
-  sessionStorage.removeItem("ricerca");
-  sessionStorage.removeItem("libri");
+      setErrore("");
+      setMessaggio("");
+      sessionStorage.removeItem("ricerca");
+      sessionStorage.removeItem("libri");
       return;
     }
     setLoading(true);
     setErrore("");
     setMessaggio("");
-
 
     try {
       const token = localStorage.getItem("token");
@@ -142,8 +141,8 @@ export default function Home() {
     const libriSalvati = sessionStorage.getItem("libri");
 
     if (libriSalvati) {
-      setRicerca(ricercaSalvata || ""); // rimette nella barra il testo salvato 
-      setLibri(JSON.parse(libriSalvati)); // riporta il testo ad una lista, altrimenti .map darebbe errore 
+      setRicerca(ricercaSalvata || ""); // rimette nella barra il testo salvato
+      setLibri(JSON.parse(libriSalvati)); // riporta il testo ad una lista, altrimenti .map darebbe errore
     }
   }, []);
 

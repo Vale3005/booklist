@@ -64,6 +64,8 @@ export default function DeleteForm() {
       }
 
       localStorage.removeItem("token");
+      sessionStorage.removeItem("ricerca");
+      sessionStorage.removeItem("libri");
       router.push("/login");
     } catch (err) {
       setErrore(err.message);

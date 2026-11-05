@@ -37,6 +37,8 @@ export default function Navbar() {
       console.error(err);
     } finally {
       localStorage.removeItem("token");
+      sessionStorage.removeItem("ricerca");
+      sessionStorage.removeItem("libri");
       router.push("/login");
     }
   }
@@ -53,9 +55,15 @@ export default function Navbar() {
 
         {/* Menu desktop */}
         <div className="hidden items-center gap-8 md:flex">
-          <Link href="/" className={linkClass}>Home</Link>
-          <Link href="/profilo" className={linkClass}>Profilo</Link>
-          <Link href="/impostazioni" className={linkClass}>Impostazioni</Link>
+          <Link href="/" className={linkClass}>
+            Home
+          </Link>
+          <Link href="/profilo" className={linkClass}>
+            Profilo
+          </Link>
+          <Link href="/impostazioni" className={linkClass}>
+            Impostazioni
+          </Link>
           <Button variant="outline" className="h-10 text-base" onClick={logout}>
             Esci
           </Button>
@@ -74,9 +82,15 @@ export default function Navbar() {
       {/* Menu telefono */}
       {aperto && (
         <div className="flex flex-col gap-4 border-t px-4 py-4 md:hidden">
-          <Link href="/" className={`${linkClass} text-lg`}>Home</Link>
-          <Link href="/profilo" className={`${linkClass} text-lg`}>Profilo</Link>
-          <Link href="/impostazioni" className={`${linkClass} text-lg`}>Impostazioni</Link>
+          <Link href="/" className={`${linkClass} text-lg`}>
+            Home
+          </Link>
+          <Link href="/profilo" className={`${linkClass} text-lg`}>
+            Profilo
+          </Link>
+          <Link href="/impostazioni" className={`${linkClass} text-lg`}>
+            Impostazioni
+          </Link>
           <Button variant="outline" className="h-11 text-base" onClick={logout}>
             Esci
           </Button>
