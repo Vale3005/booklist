@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PasswordResetController;
 
 
 Route::get('/user', function (Request $request) {
@@ -35,3 +36,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::put('/account', [UserController::class, 'update'])->middleware('auth:sanctum'); 
 Route::put('/account/password', [UserController::class, 'updatePassword'])->middleware('auth:sanctum'); 
 Route::delete('/account', [UserController::class, 'destroy'])->middleware('auth:sanctum'); 
+
+Route::post('/forgot-password', [PasswordResetController::class, 'sendLink']);
+Route::post('/reset-password', [PasswordResetController::class, 'reset']);
