@@ -41,7 +41,6 @@ export default function Login() {
         body: JSON.stringify({
           login: login,
           password: password,
-          
         }),
       });
 
@@ -53,7 +52,7 @@ export default function Login() {
         return;
       }
 
-      // Credenziali sbagliate: Laravel risponde 401 
+      // Credenziali sbagliate: Laravel risponde 401
       if (res.status === 401) {
         setErrore("Credenziali non corrette");
         return;
@@ -96,7 +95,15 @@ export default function Login() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="exampleInputPassword">Inserisci password:</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="exampleInputPassword">Inserisci password:</Label>
+                <Link
+                  href="/forgot-password"
+                  className="text-sm text-primary hover:underline"
+                >
+                  Password dimenticata?
+                </Link>
+              </div>
               <PasswordInput
                 id="exampleInputPassword"
                 value={password}
@@ -134,7 +141,10 @@ export default function Login() {
         <CardFooter>
           <p className="text-sm text-muted-foreground">
             Non hai ancora un account?{" "}
-            <Link href="/register" className="font-medium text-primary hover:underline">
+            <Link
+              href="/register"
+              className="font-medium text-primary hover:underline"
+            >
               Registrati
             </Link>
           </p>
