@@ -17,7 +17,13 @@ class RecensioneController extends Controller
 
         // subito dopo la validazione: se la richiesta esiste già, non richiamo Deepseek
 
-        $roleSystem = "Sei un esperto internazionale di libri, parli in italiano. Rispondi SOLO con un JSON valido, senza testo prima o dopo e senza backtick, con questa struttura esatta: {\"recensione\": \"testo in 5-8 righe\", \"simili\": [{\"titolo\": \"...\", \"autore\": \"...\", \"motivo\": \"una frase\"}]}. L'array simili deve contenere esattamente 3 elementi.";
+        $roleSystem = "Sei un esperto internazionale di libri, parli in italiano. 
+        Rispondi SOLO con un JSON valido, senza testo prima o dopo e senza backtick,
+         con questa struttura esatta: 
+         {\"recensione\": \"testo in 5-8 righe\", \"simili\": 
+         [{\"titolo\": \"...\", \"autore\": \"...\", \"motivo\": 
+         \"una frase\"}]}. L'array simili deve contenere esattamente 
+         3 elementi.";
 
         $prompt = "Il lettore ha apprezzato questi libri: {$dati['titoli']}. "
             . "Generi preferiti: {$dati['generi']}. Umore: {$dati['mood']}. "
