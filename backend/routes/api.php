@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\RecensioneController; 
 
 
 Route::get('/user', function (Request $request) {
@@ -22,6 +23,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/books', BookController::class);
 
     Route::post('/books/{book}/refresh', [BookController::class, 'refresh']);
+
+    Route::post('/recensione', [RecensioneController::class, 'genera']);
     
 });
 
