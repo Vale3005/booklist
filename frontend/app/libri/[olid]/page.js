@@ -47,7 +47,6 @@ export default function PaginaLibro() {
         }
 
         const data = await res.json();
-        console.log(data);
         setLibro(data);
       } catch (err) {
         setErrore(err.message);

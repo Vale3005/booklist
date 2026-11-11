@@ -13,13 +13,13 @@ export default function Profilo() {
   const [loading, setLoading] = useState(true);
   const [errore, setErrore] = useState("");
   const [letture, setLetture] = useState([]);
-  const [messaggio, setMessaggio] = useState(""); 
+  const [messaggio, setMessaggio] = useState("");
 
-  //per il contatore: 
+  //per il contatore:
   const letti = letture.filter((lettura) => lettura.status === "read");
   const daLeggere = letture.filter((lettura) => lettura.status === "to_read");
 
-  //per la tab divisa: 
+  //per la tab divisa:
   const [tabAttiva, setTabAttiva] = useState("read");
   const tabs = [
     { value: "read", label: "Letto" },
@@ -55,7 +55,7 @@ export default function Profilo() {
         }
 
         const data = await res.json();
-        console.log(data);
+
         setLetture(data);
       } catch (err) {
         setErrore(err.message);
@@ -98,36 +98,36 @@ export default function Profilo() {
       )}
 
       {messaggio && (
-          <div className="mt-4 rounded-lg border border-green-600/50 bg-green-600/10 p-3 text-base text-green-700">
-            {messaggio}
-          </div>
-        )}
+        <div className="mt-4 rounded-lg border border-green-600/50 bg-green-600/10 p-3 text-base text-green-700">
+          {messaggio}
+        </div>
+      )}
 
       {/* Barra delle tab */}
-<div className="mt-6 flex gap-1 rounded-lg border border-stone-200 bg-white p-1">
-  {tabs.map((tab) => (
-    <button
-      key={tab.value}
-      onClick={() => setTabAttiva(tab.value)}
-      className={`flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-3 font-semibold transition ${
-        tabAttiva === tab.value
-          ? "bg-amber-700 text-white"
-          : "text-stone-600 hover:bg-stone-100"
-      }`}
-    >
-      <span className="text-lg">{tab.label}</span>
-      <span
-        className={`rounded-full px-2 py-0.5 text-sm ${
-          tabAttiva === tab.value
-            ? "bg-white/25 text-white"
-            : "bg-stone-200 text-stone-700"
-        }`}
-      >
-        {tab.value === "read" ? letti.length : daLeggere.length}
-      </span>
-    </button>
-  ))}
-</div>
+      <div className="mt-6 flex gap-1 rounded-lg border border-stone-200 bg-white p-1">
+        {tabs.map((tab) => (
+          <button
+            key={tab.value}
+            onClick={() => setTabAttiva(tab.value)}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-3 font-semibold transition ${
+              tabAttiva === tab.value
+                ? "bg-amber-700 text-white"
+                : "text-stone-600 hover:bg-stone-100"
+            }`}
+          >
+            <span className="text-lg">{tab.label}</span>
+            <span
+              className={`rounded-full px-2 py-0.5 text-sm ${
+                tabAttiva === tab.value
+                  ? "bg-white/25 text-white"
+                  : "bg-stone-200 text-stone-700"
+              }`}
+            >
+              {tab.value === "read" ? letti.length : daLeggere.length}
+            </span>
+          </button>
+        ))}
+      </div>
 
       {/* Lista filtrata in base alla tab attiva */}
       {!loading && visibili.length === 0 ? (
@@ -145,7 +145,7 @@ export default function Profilo() {
                   lettura={lettura}
                   onRimuovi={rimuoviLettura}
                   onAggiorna={aggiornaLettura}
-                  onMessaggio={setMessaggio} 
+                  onMessaggio={setMessaggio}
                 />
               </BookCard>
             </div>
