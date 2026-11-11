@@ -61,6 +61,9 @@ export default function Navbar() {
           <Link href="/profilo" className={linkClass}>
             Profilo
           </Link>
+          <Link href="/consigli" className={linkClass}>
+            Consigliami
+          </Link>
           <Link href="/impostazioni" className={linkClass}>
             Impostazioni
           </Link>
