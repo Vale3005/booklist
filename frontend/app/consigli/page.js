@@ -91,7 +91,7 @@ export default function Recensione() {
             type="text"
             value={titoli}
             onChange={(e) => setTitoli(e.target.value)}
-            placeholder="es. Hunger Games, Ossessione"
+            placeholder="es. Il nome della rosa, Harry Potter"
             className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary"
           />
           {errori.titoli && (
@@ -138,14 +138,43 @@ export default function Recensione() {
           disabled={loading}
           className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50"
         >
-          Chiedi la recensione
+          Chiedi la recensione e un consiglio!
         </button>
       </form>
 
       {risultato && (
-        <div className="mt-6 rounded-lg border border-border bg-muted/40 p-4 text-sm">
-          {/* Contenuto futuro: mostra qui la recensione generata */}
-        </div>
+        <section className="mt-6 space-y-6">
+          <div className="rounded-lg border border-border bg-muted/40 p-4">
+            <h2 className="mb-2 text-xl font-semibold text-primary">
+              Recensione: 
+            </h2>
+            <p className="text-sm leading-relaxed text-foreground">
+              {risultato.recensione}
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-border bg-muted/40 p-4">
+            <h2 className="mb-3 text-xl font-semibold text-primary">
+              Libri simili
+            </h2>
+            <ul className="space-y-3">
+              {risultato.simili.map((libro) => (
+                <li
+                  key={libro.titolo}
+                  className="rounded-md border border-border bg-background p-3 text-sm"
+                >
+                  <p className="font-medium">
+                    <strong>{libro.titolo}</strong>{" "}
+                    <span className="text-muted-foreground">
+                      di {libro.autore}
+                    </span>
+                  </p>
+                  <p className="mt-1 text-muted-foreground">{libro.motivo}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
       )}
     </main>
   );
