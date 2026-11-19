@@ -81,8 +81,8 @@ export default function Profilo() {
     );
   }
 
-  return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
+   return (
+    <main className="mx-auto max-w-7xl px-4 py-10">
       <h1 className="mb-6 text-3xl font-bold text-primary">Il tuo profilo</h1>
 
       {errore && (
@@ -137,7 +137,7 @@ export default function Profilo() {
             : "Non è presente nessun libro da leggere."}
         </div>
       ) : (
-        <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {visibili.map((lettura) => (
             <div key={lettura.id}>
               <BookCard libro={lettura.book}>

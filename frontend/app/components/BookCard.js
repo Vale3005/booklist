@@ -9,17 +9,19 @@ export default function BookCard({ libro, children }) {
         <Link href={"/libri/" + olid}>
           <img
             src={libro.cover_url}
-            className="aspect-2/3 w-full object-cover"
+            className="h-44 w-full bg-muted object-cover"
             alt={libro.title}
           />
         </Link>
       )}
-      <CardContent className="flex flex-1 flex-col gap-3 pt-4">
+      <CardContent className="flex flex-1 flex-col gap-2 pt-3">
         <Link href={"/libri/" + olid}>
-          <h5 className="text-xl font-semibold leading-tight">{libro.title}</h5>
+          <h5 className="text-base font-semibold leading-tight">
+            {libro.title}
+          </h5>
         </Link>
-        <p className="text-base text-muted-foreground">{libro.author}</p>
-        <div className="mt-auto pt-3">{children}</div>
+        <p className="text-sm text-muted-foreground">{libro.author}</p>
+        <div className="mt-auto pt-2">{children}</div>
       </CardContent>
     </Card>
   );

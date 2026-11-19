@@ -149,15 +149,15 @@ export default function ReadingForm({
     );
   }
 
-  return (
-    <div className="space-y-3">
+   return (
+    <div className="space-y-2">
       {/* Voto e recensione solo per i libri letti */}
       {lettura.status === "read" && (
         <>
           <Hearts value={voto} onChange={setVoto} />
 
           <Textarea
-            rows={3}
+            rows={2}
             placeholder="Scrivi una recensione..."
             value={recensione}
             onChange={(e) => setRecensione(e.target.value)}
@@ -165,6 +165,7 @@ export default function ReadingForm({
 
           <Button
             type="button"
+            size="sm"
             className="w-full"
             onClick={salvaRecensione}
             disabled={loading}
@@ -178,6 +179,7 @@ export default function ReadingForm({
         {lettura.status === "read" ? ( //operatore ternario se è stato letto oppure no
           <Button
             type="button"
+            size="sm"
             variant="secondary"
             className="flex-1"
             onClick={() => sposta("to_read")}
@@ -188,6 +190,7 @@ export default function ReadingForm({
         ) : (
           <Button
             type="button"
+            size="sm"
             className="flex-1"
             onClick={() => sposta("read")}
             disabled={loading}
@@ -199,6 +202,7 @@ export default function ReadingForm({
         {/* Rimuovi c'è sempre, sia per Letti che per Da Leggere */}
         <Button
           type="button"
+          size="sm"
           variant="outline"
           className="flex-1 text-destructive"
           onClick={rimuovi}

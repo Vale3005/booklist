@@ -146,8 +146,8 @@ export default function Home() {
     }
   }, []);
 
-  return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
+   return (
+    <main className="mx-auto max-w-7xl px-4 py-10">
       <h1 className="mb-8 text-center text-4xl font-bold text-primary">
         Booklist
       </h1>
@@ -206,7 +206,7 @@ export default function Home() {
         )}
       </div>
 
-      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
         {libri.map((libro) => (
           <div key={libro.open_library_key}>
             <BookCard libro={libro}>
@@ -214,7 +214,8 @@ export default function Home() {
                 <div className="flex gap-2">
                   <Button
                     type="button"
-                    className="h-11 flex-1 text-base"
+                    size="sm"
+                    className="flex-1"
                     disabled={loading}
                     onClick={() => aggiungi(libro, "read")}
                   >
@@ -222,8 +223,9 @@ export default function Home() {
                   </Button>
                   <Button
                     type="button"
+                    size="sm"
                     variant="outline"
-                    className="h-11 flex-1 text-base"
+                    className="flex-1"
                     disabled={loading}
                     onClick={() => aggiungi(libro, "to_read")}
                   >
@@ -231,8 +233,8 @@ export default function Home() {
                   </Button>
                 </div>
                 <Button
+                  size="sm"
                   variant="outline"
-                  className="h-11 text-base"
                   render={
                     <Link
                       href={"/libri/" + libro.open_library_key.split("/").pop()}

@@ -1,10 +1,10 @@
 # Booklist
 
-Applicazione web per tenere traccia dei libri letti e da leggere. Progetto finale del corso Full Stack.
+Applicazione web per tenere traccia dei libri letti e da leggere.
 
 ## Funzionalità
 
-- Registrazione, login (con email **oppure** nome utente) e logout
+- Registrazione, login (con email oppure nome utente) e logout
 - Recupero password via email, con link che scade dopo 60 minuti
 - Home con ricerca di libri per titolo o autore (Open Library)
 - Libreria personale divisa in **Letto** e **Da leggere**, con spostamento e rimozione dei libri
@@ -51,9 +51,6 @@ git clone <url-del-repository>
 cd booklist
 docker compose up -d --build
 ```
-
-La prima volta la costruzione dell'immagine richiede qualche minuto.
-
 ### 2. Configura il backend
 
 Il file `backend/.env` non è su Git: va creato a partire dall'esempio.
