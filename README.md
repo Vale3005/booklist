@@ -72,7 +72,7 @@ Apri `backend/.env` e controlla queste impostazioni:
 | `MAIL_MAILER` | `smtp` |
 | `MAIL_HOST` | `mailpit` |
 | `MAIL_PORT` | `1025` |
-| URL del frontend | `http://localhost:3000` (la variabile letta in `app/Providers/AppServiceProvider.php`) |
+| `FRONTEND_URL` | `http://localhost:3000` (la variabile letta in `app/Providers/AppServiceProvider.php`) |
 | `DEEPSEEK_API_KEY` | la tua chiave personale (vedi sotto) |
 
 I valori di database sono quelli di default del `docker-compose.yaml`.
