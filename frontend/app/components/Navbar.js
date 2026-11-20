@@ -91,6 +91,9 @@ export default function Navbar() {
           <Link href="/profilo" className={`${linkClass} text-lg`}>
             Profilo
           </Link>
+          <Link href="/consigli" className={linkClass}>
+            Consigliami
+          </Link>
           <Link href="/impostazioni" className={`${linkClass} text-lg`}>
             Impostazioni
           </Link>

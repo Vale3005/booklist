@@ -58,42 +58,52 @@ export default function PaginaLibro() {
   }, [router, olid]);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Button variant="outline" onClick={() => router.back()}> Indietro </Button>
-      {errore && (
-        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
-          {errore}
-        </div>
-      )}
-      {loading && <p className="text-muted-foreground">Caricamento...</p>}
-
-      {libro && (
-        <div className="flex flex-col gap-8 md:flex-row">
-          {/* Colonna sinistra: copertina */}
-          <div className="md:w-1/3">
-            {libro.cover_url && (
-              <img
-                className="w-full rounded-lg object-cover"
-                src={libro.cover_url}
-                alt={libro.title}
-              />
-            )}
+    <>
+      <main className="mx-auto max-w-5xl px-4 pb-24 pt-8">
+        {errore && (
+          <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+            {errore}
           </div>
+        )}
+        {loading && <p className="text-muted-foreground">Caricamento...</p>}
 
-          {/* Colonna destra: dettagli */}
-          <div className="flex-1 space-y-4">
-            <h1 className="text-3xl font-bold">
-              {libro.title} - {libro.author}
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              {libro.year || "Data di uscita non disponibile"}
-            </p>
-            <p className="leading-relaxed">
-              {libro.description || "Trama non disponibile"}
-            </p>
+        {libro && (
+          <div className="grid items-center gap-8 md:grid-cols-2">
+            {/* Colonna sinistra: copertina centrata, con altezza limitata */}
+            <div className="flex justify-center">
+              {libro.cover_url && (
+                <img
+                  className="max-h-[45vh] w-auto rounded-lg object-contain shadow-md md:max-h-[65vh]"
+                  src={libro.cover_url}
+                  alt={libro.title}
+                />
+              )}
+            </div>
+
+            {/* Colonna destra: dettagli, centrati in verticale rispetto alla copertina */}
+            <div className="space-y-4 text-center md:text-left">
+              <h1 className="text-3xl font-bold">
+                {libro.title} - {libro.author}
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                {libro.year || "Data di uscita non disponibile"}
+              </p>
+              <p className="max-h-[35vh] overflow-y-auto pr-2 text-left leading-relaxed">
+                {libro.description || "Trama non disponibile"}
+              </p>
+            </div>
           </div>
+        )}
+      </main>
+
+      {/* Barra fissa in basso con il pulsante Indietro */}
+       <div className="fixed inset-x-0 bottom-0 border-t bg-background py-6">
+        <div className="mx-auto flex max-w-5xl justify-center px-4">
+          <Button variant="outline" onClick={() => router.back()}>
+            Indietro
+          </Button>
         </div>
-      )}
-    </main>
+      </div>
+    </>
   );
 }
