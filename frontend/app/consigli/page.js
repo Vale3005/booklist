@@ -67,7 +67,7 @@ export default function Recensione() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="mb-6 text-3xl font-bold text-primary">Chiedi all'AI</h1>
+      <h1 className="mb-6 text-3xl font-bold text-primary">Lo vuoi un consiglio?</h1>
 
       {errore && (
         <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
