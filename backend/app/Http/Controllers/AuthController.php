@@ -49,7 +49,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('booklist')->plainTextToken;
+        $token = $user->createToken('booklist')->plainTextToken; 
         return response()->json([
             'user' => $user,
             'token' => $token,

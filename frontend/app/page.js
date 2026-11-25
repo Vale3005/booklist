@@ -81,7 +81,7 @@ export default function Home() {
       setLibri([]);
       setErrore("");
       setMessaggio("");
-      sessionStorage.removeItem("ricerca");
+      sessionStorage.removeItem("ricerca"); //fa in modo che la ricerca venga eliminata oppure rimanga in questo caso si elimina 
       sessionStorage.removeItem("libri");
       return;
     }

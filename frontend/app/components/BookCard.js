@@ -21,7 +21,7 @@ export default function BookCard({ libro, children }) {
           </h5>
         </Link>
         <p className="text-sm text-muted-foreground">{libro.author}</p>
-        <div className="mt-auto pt-2">{children}</div>
+        <div className="mt-auto pt-2">{children}</div>  {/* Rende la card riutilizzabile */}
       </CardContent>
     </Card>
   );

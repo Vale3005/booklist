@@ -21,11 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        ResetPassword::createUrlUsing(function ($user, string $token) {
-            $frontend = env('FRONTEND_URL', 'http://localhost:3000');
+        ResetPassword::createUrlUsing(function ($user, string $token) { 
+            $frontend = env('FRONTEND_URL', 'http://localhost:3000'); //legge indirizzo dove mandare la mail per reset password, se non esiste ripiega su localhost 
 
             return $frontend . '/reset-password?token=' . $token
-                . '&email=' . urlencode($user->email);
+                . '&email=' . urlencode($user->email); //costruisce l'URL finale concatenando le parti
         });
     }
 }
