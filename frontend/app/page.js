@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BookCard from "./components/BookCard";
+import PopularSlider from "./components/PopularSlider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -17,6 +18,7 @@ export default function Home() {
   const [messaggio, setMessaggio] = useState("");
   const [ricerca, setRicerca] = useState("");
   const [libri, setLibri] = useState([]);
+  const [cercato, setCercato] = useState(false); // true quando c'è una ricerca attiva
 
   async function aggiungi(libro, status) {
     setLoading(true);
@@ -79,12 +81,15 @@ export default function Home() {
 
     if (ricerca.trim() === "") {
       setLibri([]);
+      setCercato(false); // ricerca vuota: lo slider torna visibile
       setErrore("");
       setMessaggio("");
-      sessionStorage.removeItem("ricerca"); //fa in modo che la ricerca venga eliminata oppure rimanga in questo caso si elimina 
+      sessionStorage.removeItem("ricerca"); //fa in modo che la ricerca venga eliminata oppure rimanga in questo caso si elimina
       sessionStorage.removeItem("libri");
       return;
     }
+
+    setCercato(true); // ricerca attiva: lo slider sparisce
     setLoading(true);
     setErrore("");
     setMessaggio("");
@@ -143,10 +148,11 @@ export default function Home() {
     if (libriSalvati) {
       setRicerca(ricercaSalvata || ""); // rimette nella barra il testo salvato
       setLibri(JSON.parse(libriSalvati)); // riporta il testo ad una lista, altrimenti .map darebbe errore
+      setCercato(true); // tornando dalla pagina info lo slider resta nascosto
     }
   }, []);
 
-   return (
+  return (
     <main className="mx-auto max-w-7xl px-4 py-10">
       <h1 className="mb-8 text-center text-4xl font-bold text-primary">
         Booklist
@@ -205,6 +211,10 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {!cercato && (
+        <PopularSlider />
+      )}
 
       <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
         {libri.map((libro) => (

@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\RecensioneController; 
 
+ //middleware fa sì che si abbia accesso ad una rotta solo se ci sono certi criteri, è un controllo 
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -32,9 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/register', [AuthController::class, 'register']); 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum'); 
-
-//Impostazioni route 
-
 
 Route::put('/account', [UserController::class, 'update'])->middleware('auth:sanctum'); 
 Route::put('/account/password', [UserController::class, 'updatePassword'])->middleware('auth:sanctum'); 

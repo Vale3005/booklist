@@ -15,7 +15,7 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $query = $request->user()->readings()->with('book'); #user è utente loggato, readings limita la query alle sue letture e with carica le letture con i dati
+        $query = $request->user()->readings()->with('book');
         if ($request->query('status')) {
             $query->where('status', $request->query('status'));
         }
@@ -47,7 +47,9 @@ class BookController extends Controller
         $key = $validated['open_library_key'];
 
         // Controllo che il libro esista davvero su Open Library
-        $response = Http::get("https://openlibrary.org{$key}.json");
+        $response = Http::withHeaders(['User-Agent' => 'Booklist/1.0'])
+            ->timeout(20)
+            ->get("https://openlibrary.org{$key}.json");
 
         if ($response->failed()) {
             return response()->json(['error' => 'Book not found'], 404);
@@ -140,11 +142,13 @@ class BookController extends Controller
             return response()->json(['error' => 'ISBN mancante'], 400);
         }
 
-        $response = Http::get('https://openlibrary.org/api/books', [
-            'bibkeys' => "ISBN:{$isbn}",
-            'format' => 'json',
-            'jscmd' => 'data',
-        ]);
+        $response = Http::withHeaders(['User-Agent' => 'Booklist/1.0'])
+            ->timeout(20)
+            ->get('https://openlibrary.org/api/books', [
+                'bibkeys' => "ISBN:{$isbn}",
+                'format' => 'json',
+                'jscmd' => 'data',
+            ]);
 
         if ($response->failed() || empty($response->json("ISBN:{$isbn}"))) {
             return response()->json(['error' => 'Il libro non è presente'], 404);
@@ -169,11 +173,13 @@ class BookController extends Controller
 
         $olid = basename($book->open_library_key);
 
-        $response = Http::get('https://openlibrary.org/api/books', [
-            'bibkeys' => "OLID:{$olid}",
-            'format' => 'json',
-            'jscmd' => 'data',
-        ]);
+        $response = Http::withHeaders(['User-Agent' => 'Booklist/1.0'])
+            ->timeout(20)
+            ->get('https://openlibrary.org/api/books', [
+                'bibkeys' => "OLID:{$olid}",
+                'format' => 'json',
+                'jscmd' => 'data',
+            ]);
 
         if ($response->failed() || empty($response->json("OLID:{$olid}"))) {
             return response()->json(['error' => 'Il libro non è presente'], 404);
@@ -198,11 +204,13 @@ class BookController extends Controller
             return response()->json(['error' => 'Campo mancante'], 400);
         }
 
-        $response = Http::get('https://openlibrary.org/search.json', [
-            'q' => $q,
-            'limit' => 10, //mostra 10 risultati 
-            'fields' => 'key,title,author_name,cover_i',
-        ]);
+        $response = Http::withHeaders(['User-Agent' => 'Booklist/1.0'])
+            ->timeout(20)
+            ->get('https://openlibrary.org/search.json', [
+                'q' => $q,
+                'limit' => 10, //mostra 10 risultati
+                'fields' => 'key,title,author_name,cover_i',
+            ]);
 
         if ($response->failed()) {
             return response()->json(['error' => 'Errore nella ricerca'], 500);
@@ -239,7 +247,9 @@ class BookController extends Controller
 
     public function details(string $olid)
     {
-        $response = Http::get("https://openlibrary.org/works/{$olid}.json");
+        $response = Http::withHeaders(['User-Agent' => 'Booklist/1.0'])
+            ->timeout(20)
+            ->get("https://openlibrary.org/works/{$olid}.json");
 
         if ($response->failed()) {
             return response()->json(['error' => 'Il libro non è presente'], 404);
@@ -263,7 +273,9 @@ class BookController extends Controller
         $author = 'Autore sconosciuto';
         if (isset($data['authors'][0]['author']['key'])) {
             $authorKey = $data['authors'][0]['author']['key'];
-            $authorResponse = Http::get("https://openlibrary.org{$authorKey}.json");
+            $authorResponse = Http::withHeaders(['User-Agent' => 'Booklist/1.0'])
+                ->timeout(20)
+                ->get("https://openlibrary.org{$authorKey}.json");
 
             if ($authorResponse->successful()) {
                 $authorData = $authorResponse->json();

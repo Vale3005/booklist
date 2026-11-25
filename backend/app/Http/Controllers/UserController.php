@@ -31,7 +31,7 @@ class UserController extends Controller
 
         $validated = $request->validate([
             'name' => ['sometimes', 'required', 'string', 'max:255', 'not_regex:/@/', Rule::unique('users')->ignore($user->id)],
-            'email' => ['sometimes', 'required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'email' => ['sometimes', 'required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)], // Rule permette di non dire che è già in uso sia email che name 
         ]);
 
         $user->update($validated);
