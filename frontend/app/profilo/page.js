@@ -111,7 +111,7 @@ export default function Profilo() {
             onClick={() => setTabAttiva(tab.value)}
             className={`flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-3 font-semibold transition ${
               tabAttiva === tab.value
-                ? "bg-amber-700 text-white"
+                ? "bg-[#A64437] text-white"
                 : "text-stone-600 hover:bg-stone-100"
             }`}
           >

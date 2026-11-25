@@ -6,13 +6,68 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const endPoint = "http://localhost:8000/api/books/details";
+const endPoint2 = "http://localhost:8000/api/books"; // NUOVO
 
 export default function PaginaLibro() {
   const { olid } = useParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errore, setErrore] = useState("");
+  const [messaggio, setMessaggio] = useState(""); // NUOVO
   const [libro, setLibro] = useState(null);
+
+  // NUOVO
+  async function aggiungi(libro, status) {
+    setLoading(true);
+    setErrore("");
+    setMessaggio("");
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(endPoint2, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          open_library_key: `/works/${olid}`,
+          title: libro.title,
+          author: libro.author,
+          cover_url: libro.cover_url,
+          status: status,
+        }),
+      });
+
+      if (res.status === 401) {
+        localStorage.removeItem("token");
+        router.push("/login");
+        return;
+      }
+
+      if (res.status === 404) {
+        setErrore("Libro non trovato su Open Library");
+        return;
+      }
+
+      if (res.status === 409) {
+        setErrore("Libro già presente nella tua lista");
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+
+      setMessaggio("Libro aggiunto alla tua lista");
+    } catch (err) {
+      setErrore(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     async function carica() {
@@ -41,7 +96,6 @@ export default function PaginaLibro() {
           return;
         }
 
-        // Altri errori (server, rete etc)
         if (!res.ok) {
           throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         }
@@ -65,11 +119,16 @@ export default function PaginaLibro() {
             {errore}
           </div>
         )}
+        {/* NUOVO */}
+        {messaggio && (
+          <div className="rounded-lg border border-green-600/50 bg-green-600/10 p-3 text-sm text-green-700">
+            {messaggio}
+          </div>
+        )}
         {loading && <p className="text-muted-foreground">Caricamento...</p>}
 
         {libro && (
           <div className="grid items-center gap-8 md:grid-cols-2">
-            {/* Colonna sinistra: copertina centrata, con altezza limitata */}
             <div className="flex justify-center">
               {libro.cover_url && (
                 <img
@@ -80,7 +139,6 @@ export default function PaginaLibro() {
               )}
             </div>
 
-            {/* Colonna destra: dettagli, centrati in verticale rispetto alla copertina */}
             <div className="space-y-4 text-center md:text-left">
               <h1 className="text-3xl font-bold">
                 {libro.title} - {libro.author}
@@ -91,13 +149,34 @@ export default function PaginaLibro() {
               <p className="max-h-[35vh] overflow-y-auto pr-2 text-left leading-relaxed">
                 {libro.description || "Trama non disponibile"}
               </p>
+
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  className="flex-1"
+                  disabled={loading}
+                  onClick={() => aggiungi(libro, "read")}
+                >
+                  Letto
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  className="flex-1"
+                  disabled={loading}
+                  onClick={() => aggiungi(libro, "to_read")}
+                >
+                  Da leggere
+                </Button>
+              </div>
             </div>
           </div>
         )}
       </main>
 
-      {/* Barra fissa in basso con il pulsante Indietro */}
-       <div className="fixed inset-x-0 bottom-0 border-t bg-background py-6">
+      <div className="fixed inset-x-0 bottom-0 border-t bg-background py-6">
         <div className="mx-auto flex max-w-5xl justify-center px-4">
           <Button variant="outline" onClick={() => router.back()}>
             Indietro
