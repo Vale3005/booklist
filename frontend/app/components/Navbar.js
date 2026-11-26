@@ -49,8 +49,12 @@ export default function Navbar() {
   return (
     <nav className="border-b bg-background">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <Link href="/" className="text-2xl font-bold text-primary">
-          Booklist
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-2xl font-bold text-primary"
+        >
+          <img src="/logo.png" alt="Logo Booklist" className="h-5 w-auto" />
+          Booklist 
         </Link>
 
         {/* Menu desktop */}
